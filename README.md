@@ -1,7 +1,8 @@
 # soccercv
 
 
-##1. 在mac上面搭建open cv的开发环境
+
+## 1. 在mac上面搭建open cv的开发环境
 
 **1. 现有的环境**
 
