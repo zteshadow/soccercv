@@ -25,7 +25,5 @@ http://www.pyimagesearch.com/2016/12/19/install-opencv-3-on-macos-with-homebrew-
 
 最后还是不行, 报错: "No module named 'cv2'""
 
-pip3 install opencv-python
+echo $PATH发现我的python3有两个路径, 把其中的/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5路径去掉就好了(注意: 开始我没发现, 又pip3 install opencv-python了一下, 结果运行报告"highgui/src/window.cpp error: (-2) The function is not implemented"错误, 后来找到路径错误, 运行pip3 uninstall opencv-python才可以工作了)
 
-
-搞定收工
