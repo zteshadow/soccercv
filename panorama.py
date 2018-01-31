@@ -1,21 +1,21 @@
 
-
 # import the necessary packages
 import numpy as np
 import cv2
+
 class Stitcher:
     def __init__(self):
         # determine if we are using OpenCV v3.X
         print("--init--")
     
     #支持默认参数, 这个很赞, 在重构代码的时候提供极大便利
-    def stitch(self, images, ratio=0.75, reprojThresh=4.0,
-        showMatches=False):
+    def stitch(self, images, ratio = 0.75, reprojThresh = 4.0, showMatches = False):
         # unpack the images, then detect keypoints and extract
         # local invariant descriptors from them
         (imageB, imageA) = images
         (kpsA, featuresA) = self.detectAndDescribe(imageA)
         (kpsB, featuresB) = self.detectAndDescribe(imageB)
+
         # match features between the two images
         M = self.matchKeypoints(kpsA, kpsB,
             featuresA, featuresB, ratio, reprojThresh)
@@ -41,11 +41,11 @@ class Stitcher:
 
     #提取关键点和特征
     def detectAndDescribe(self, image):
-        # check to see if we are using OpenCV 3.X
         # detect and extract features from the image
         descriptor = cv2.xfeatures2d.SIFT_create()
         (kps, features) = descriptor.detectAndCompute(image, None)
         kps = np.float32([kp.pt for kp in kps])
+        
         # return a tuple of keypoints and features
         return (kps, features)
 
