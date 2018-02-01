@@ -8,7 +8,12 @@ class Stitcher:
         # determine if we are using OpenCV v3.X
         print("--init--")
     
-    #支持默认参数, 这个很赞, 在重构代码的时候提供极大便利
+    # ransacReprojThreshold
+    # Maximum allowed reprojection error to treat a point pair as an inlier (used in the RANSAC method only).
+    # That is, if dstPoint - srcPoint * H > ransacReprojThreshold
+    # then the point  i is considered an outlier. 
+    # If srcPoints and dstPoints are measured in pixels, 
+    # it usually makes sense to set this parameter somewhere in the range of 1 to 10.
     def stitch(self, images, ratio = 0.75, reprojThresh = 4.0, showMatches = False):
         # unpack the images, then detect keypoints and extract
         # local invariant descriptors from them
