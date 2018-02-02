@@ -20,7 +20,7 @@ imageB = imutils.resize(imageB, width = 400)
  
 # stitch the images together to create a panorama
 stitcher = Stitcher()
-(result, vis) = stitcher.stitch([imageA, imageB], ratio = 0.5, reprojThresh = 2.0, showMatches = True)
+(result, vis) = stitcher.stitch([imageA, imageB], ratio = 0.5, reprojThresh = 1.0, showMatches = True)
  
 # show the images
 cv2.imshow("Image A", imageA)

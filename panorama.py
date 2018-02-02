@@ -80,6 +80,8 @@ class Stitcher:
             return (matches, H, status)
         # otherwise, no homograpy could be computed
         return None
+
+    # return image of image1+image2+match line
     def drawMatches(self, imageA, imageB, kpsA, kpsB, matches, status):
         # initialize the output visualization image
         (hA, wA) = imageA.shape[:2]
@@ -95,7 +97,10 @@ class Stitcher:
                 # draw the match
                 ptA = (int(kpsA[queryIdx][0]), int(kpsA[queryIdx][1]))
                 ptB = (int(kpsB[trainIdx][0]) + wA, int(kpsB[trainIdx][1]))
-                cv2.line(vis, ptA, ptB, (0, 255, 0), 1)
+                #red circle, red line,
+                cv2.line(vis, ptA, ptB, (0, 0, 255), 1)
+                cv2.circle(vis, ptA, 2, (0, 0, 255), 1)
+                cv2.circle(vis, ptB, 2, (0, 0, 255), 1)
         # return the visualization
         return vis
         
