@@ -22,7 +22,7 @@ class Stitcher:
         (kpsB, featuresB) = self.detectAndDescribe(imageB)
 
         # match features between the two images
-        M = self.matchKeypoints(kpsA, kpsB,
+        M = self.matchKeypoints(imageA, kpsA, imageB, kpsB,
             featuresA, featuresB, ratio, reprojThresh)
         # if the match is None, then there aren't enough matched
         # keypoints to create a panorama
@@ -44,6 +44,17 @@ class Stitcher:
         # return the stitched image
         return result
 
+    def filterKeypoints(self, image, kps):
+        (h, w) = image.shape[:2]
+        half_height = h / 2;
+        
+        new_kps = []
+        for point in kps:
+            if (point.pt[1] > half_height):
+                new_kps.append(point)
+
+        return new_kps
+
     #提取关键点和特征
     def detectAndDescribe(self, image):
         # detect and extract features from the image
@@ -54,19 +65,27 @@ class Stitcher:
         # return a tuple of keypoints and features
         return (kps, features)
 
-    def matchKeypoints(self, kpsA, kpsB, featuresA, featuresB,
+    def matchKeypoints(self, imageA, kpsA, imageB, kpsB, featuresA, featuresB,
         ratio, reprojThresh):
         # compute the raw matches and initialize the list of actual
         # matches
         matcher = cv2.DescriptorMatcher_create("BruteForce")
         rawMatches = matcher.knnMatch(featuresA, featuresB, 2)
+
+        # add a filter to matched points by height / 2
+        (h, w) = imageA.shape[:2]
+        half_height = h / 2;
+
         matches = []
         # loop over the raw matches
         for m in rawMatches:
             # ensure the distance is within a certain ratio of each
             # other (i.e. Lowe's ratio test)
             if len(m) == 2 and m[0].distance < m[1].distance * ratio:
-                matches.append((m[0].trainIdx, m[0].queryIdx))
+                point = kpsA[m[0].queryIdx]
+                #print(point)
+                if (point[1] > half_height):
+                    matches.append((m[0].trainIdx, m[0].queryIdx))
         # computing a homography requires at least 4 matches
         if len(matches) > 4:
             # construct the two sets of points
