@@ -85,8 +85,8 @@ class Stitcher:
             if len(m) == 2 and m[0].distance < m[1].distance * ratio:
                 point = kpsA[m[0].queryIdx]
                 #print(point)
-                if (point[1] > half_height):
-                    matches.append((m[0].trainIdx, m[0].queryIdx))
+                #if (point[1] > half_height):
+                matches.append((m[0].trainIdx, m[0].queryIdx))
         # computing a homography requires at least 4 matches
         if len(matches) > 4:
             # construct the two sets of points
