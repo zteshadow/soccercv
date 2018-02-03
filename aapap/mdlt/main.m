@@ -69,12 +69,12 @@ feval('vl_setup');
 cd ../..;
 
 %---------------------------------------------
-% Check if we are already running in parallel.
+% Check if we are already running in parallel. //for use in octave by samuelsong
 %---------------------------------------------
-poolsize = matlabpool('size');
-if poolsize == 0 %if not, we attempt to do it:
-    matlabpool open;
-end
+% poolsize = matlabpool('size');
+% if poolsize == 0 %if not, we attempt to do it:
+%    matlabpool open;
+%end
 
 %-------------------------
 % User defined parameters.
@@ -175,7 +175,9 @@ end
 %-----------------
 fprintf('Outlier removal\n');tic;
 % Multi-GS
-rng(0);
+% rng(0);
+% rand('state',0);
+rand('seed',0);
 [ ~,res,~,~ ] = multigsSampling(100,data_norm,M,10);
 con = sum(res<=thr);
 [ ~, maxinx ] = max(con);
