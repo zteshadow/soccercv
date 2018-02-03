@@ -48,7 +48,10 @@ function [H, A, C1, C2] = x(xs1,xs2,A,W,C1,C2)
         end
         
         % Extract nullspace
-        [u,s,v] = svd(A, 0); s = diag(s);
+        % A is 8x9
+        % u is 8x8, s is 8x9, v is 9x9
+        % [u,s,v] = svd(A, 0); s = diag(s);
+        [u,s,v] = svd(A); s = diag(s);
     end
 
     nullspace_dimension = sum(s < eps * s(1) * 1e3);
