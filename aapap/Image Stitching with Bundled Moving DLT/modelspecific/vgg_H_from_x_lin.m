@@ -34,7 +34,8 @@ function [H, A, C1, C2] = x(xs1,xs2,A,W,C1,C2)
         B(2:2:end,:)=W*A(2:2:end,:);
         
         % Extract nullspace
-        [u,s,v] = svd(B, 0); s = diag(s);
+        % [u,s,v] = svd(B, 0); s = diag(s);
+        [u,s,v] = svd(B); s = diag(s);
     else
         A = [];
         ooo  = zeros(1,3);
@@ -48,7 +49,8 @@ function [H, A, C1, C2] = x(xs1,xs2,A,W,C1,C2)
         end
         
         % Extract nullspace
-        [u,s,v] = svd(A, 0); s = diag(s);
+        % [u,s,v] = svd(A, 0); s = diag(s);
+        [u,s,v] = svd(A); s = diag(s);
     end
 
     nullspace_dimension = sum(s < eps * s(1) * 1e3);
