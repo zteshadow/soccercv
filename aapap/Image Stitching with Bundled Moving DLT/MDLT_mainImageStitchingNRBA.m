@@ -36,17 +36,18 @@ end
 %----------------------
 % Setup VLFeat toolbox.
 %----------------------
-cd vlfeat-0.9.14/toolbox;
+cd vlfeat-0.9.21/toolbox;
 feval('vl_setup');
 cd ../..;
 
 %---------------------------------------------
 % Check if we are already running in parallel.
 %---------------------------------------------
-poolsize = matlabpool('size');
-if poolsize == 0 %if not, we attemp to do it:
-    matlabpool open;
-end
+% close for octave
+% poolsize = matlabpool('size');
+% if poolsize == 0 %if not, we attemp to do it:
+%     matlabpool open;
+% end
 
 %-------------------------
 % User defined parameters.
@@ -164,7 +165,8 @@ for i=1:size(imgs_pairs,1)
     data_norm{i} = [data_norm_img1;data_norm_img2];
 
     % Outlier removal - Multi-GS (RANSAC).
-    rng(0);
+    % rng(0); %for octave
+    rand('state',0)
     [ ~,res,~,~,err ] = multigsSampling(100,data_norm{i},M,10);
     con = sum(res<=thr);
     [ ~, maxinx ] = max(con);
