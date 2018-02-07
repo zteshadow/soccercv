@@ -352,7 +352,7 @@ for i=1:num_imgs
     % Blending images by averaging
     canvas_img = imageBlending(canvas_img,warped_img2,'linear');
 end
-pairwiseH_fig = figure;imshow(canvas_img);
+pairwiseH_fig = figure;imshow(canvas_img);imwrite(canvas_img, './images/glenelg/result1.jpg');
 drawnow;
 
 
@@ -498,7 +498,7 @@ for i=1:num_imgs
     % Blending images by averaging
     canvas_img = imageBlending(canvas_img,warped_img2,'linear');
 end
-rigidBA_fig = figure;imshow(canvas_img);
+rigidBA_fig = figure;imshow(canvas_img);imwrite(canvas_img, './images/glenelg/result2.jpg');
 drawnow;
 
 
@@ -568,7 +568,7 @@ for i=1:num_imgs
        
     canvas_img = imageBlending(canvas_img,warped_img2,'linear');
 end  
-MDLT_fig = figure;imshow(canvas_img);
+MDLT_fig = figure;imshow(canvas_img);imwrite(canvas_img, './images/glenelg/result3.jpg');
 drawnow;
 
 
@@ -603,7 +603,7 @@ for i=1:num_imgs
        
     canvas_img = imageBlending(canvas_img,warped_img2,'linear');
 end  
-nonrigidBA_fig = figure;imshow(canvas_img);
+nonrigidBA_fig = figure;imshow(canvas_img);imwrite(canvas_img, './images/glenelg/result4.jpg');
 drawnow;
 
 
