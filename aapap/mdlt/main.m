@@ -64,9 +64,9 @@ cd ..;
 %----------------------
 % Setup VLFeat toolbox.
 %----------------------
-cd vlfeat-0.9.14/toolbox;
+cd ../vlfeat-0.9.21/toolbox;
 feval('vl_setup');
-cd ../..;
+cd ../../mdlt;
 
 %---------------------------------------------
 % Check if we are already running in parallel. //for use in octave by samuelsong
@@ -94,28 +94,28 @@ thr   = 0.1;  % RANSAC threshold.
 C1 = 100; % Resolution/grid-size for the mapping function in MDLT (C1 x C2).
 C2 = 100;
 
-if input('Which images you want to stitch? [1 for ''temple''] [2 for ''railtracks''] ') == 1
-    fprintf('> Stitching ''temple'' images\n');
-    % In this implementation the weights are not calculated in the normalised 
-    % space (but in the image space), therefore, these 2 following paramaters  
-    % must be tuned in each case. 
-    % If somebody wants to contribute to this code and calculate the weights in 
-    % the normalised space so that the implementation is not too parameter-dependent, 
-    % please, write me an email (jzaragoza@cs.adelaide.edu.au) and I'll be happy 
-    % to talk with you :)
-    gamma = 0.01; % Normalizer for Moving DLT. (0.0015-0.1 are usually good numbers).
-    sigma = 8.5;  % Bandwidth for Moving DLT. (Between 8-12 are good numbers). 
+%if input('Which images you want to stitch? [1 for ''temple''] [2 for ''railtracks''] ') == 1
+%    fprintf('> Stitching ''temple'' images\n');
+%    % In this implementation the weights are not calculated in the normalised 
+%    % space (but in the image space), therefore, these 2 following paramaters  
+%    % must be tuned in each case. 
+%    % If somebody wants to contribute to this code and calculate the weights in 
+%    % the normalised space so that the implementation is not too parameter-dependent, 
+%    % please, write me an email (jzaragoza@cs.adelaide.edu.au) and I'll be happy 
+%    % to talk with you :)
+%    gamma = 0.01; % Normalizer for Moving DLT. (0.0015-0.1 are usually good numbers).
+%    sigma = 8.5;  % Bandwidth for Moving DLT. (Between 8-12 are good numbers). 
     
-    % Load images and SIFT matches for temple data.
-    load 'SIFTdata/temple.mat'
-else
-    fprintf('> Stitching ''railtracks'' images\n');    
-    gamma = 0.0015; 
-    sigma = 12; 
-    
-    % Load images and SIFT matches for railtracks data.
-    load 'SIFTdata/railtracks.mat'    
-end
+%    % Load images and SIFT matches for temple data.
+%    load 'SIFTdata/temple.mat'
+%else
+%    fprintf('> Stitching ''railtracks'' images\n');    
+%    gamma = 0.0015; 
+%    sigma = 12; 
+%    
+%    % Load images and SIFT matches for railtracks data.
+%    load 'SIFTdata/railtracks.mat'    
+%end
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -125,33 +125,33 @@ end
 % library for SIFT keypoint detection and matching, **comment** the 
 % previous IF/ELSE STATEMENT and **uncomment** the following code:
 % 
-% gamma = 0.1; % Normalizer for Moving DLT. (0.0015-0.1 are usually good numbers).
-% sigma = 8.5;  % Bandwidth for Moving DLT. (Between 8-12 are good numbers).   
-% scale = 1;    % Scale of input images (maybe for large images you would like to use a smaller scale).
-% 
-% %------------------
-% % Images to stitch.
-% %------------------
-% path1 = 'images/case26/4.JPG';
-% path2 = 'images/case26/5.JPG';
-% 
-% %-------------
-% % Read images.
-% %-------------
-% fprintf('Read images and SIFT matching\n');tic;
-% fprintf('> Reading images...');tic;
-% img1 = imresize(imread(sprintf('%s',path1)),scale);
-% img2 = imresize(imread(sprintf('%s',path2)),scale);
-% fprintf('done (%fs)\n',toc);
-% 
-% %--------------------------------------
-% % SIFT keypoint detection and matching.
-% %--------------------------------------
-% fprintf('  Keypoint detection and matching...');tic;
-% [ kp1,ds1 ] = vl_sift(single(rgb2gray(img1)),'PeakThresh', 0,'edgethresh',500);
-% [ kp2,ds2 ] = vl_sift(single(rgb2gray(img2)),'PeakThresh', 0,'edgethresh',500);
-% matches   = vl_ubcmatch(ds1,ds2);
-% fprintf('done (%fs)\n',toc);
+ gamma = 0.1; % Normalizer for Moving DLT. (0.0015-0.1 are usually good numbers).
+ sigma = 8.5;  % Bandwidth for Moving DLT. (Between 8-12 are good numbers).   
+ scale = 1;    % Scale of input images (maybe for large images you would like to use a smaller scale).
+ 
+ %------------------
+ % Images to stitch.
+ %------------------
+ path1 = 'images/case26/4.JPG';
+ path2 = 'images/case26/5.JPG';
+ 
+ %-------------
+ % Read images.
+ %-------------
+ fprintf('Read images and SIFT matching\n');tic;
+ fprintf('> Reading images...');tic;
+ img1 = imresize(imread(sprintf('%s',path1)),scale);
+ img2 = imresize(imread(sprintf('%s',path2)),scale);
+ fprintf('done (%fs)\n',toc);
+ 
+ %--------------------------------------
+ % SIFT keypoint detection and matching.
+ %--------------------------------------
+ fprintf('  Keypoint detection and matching...');tic;
+ [ kp1,ds1 ] = vl_sift(single(rgb2gray(img1)),'PeakThresh', 0,'edgethresh',500);
+ [ kp2,ds2 ] = vl_sift(single(rgb2gray(img2)),'PeakThresh', 0,'edgethresh',500);
+ matches   = vl_ubcmatch(ds1,ds2);
+ fprintf('done (%fs)\n',toc);
 
 % Normalise point distribution.
 fprintf('  Normalising point distribution...');tic;
@@ -187,7 +187,7 @@ if size(img1,1) == size(img2,1)
     % Show results of RANSAC.
     fprintf('  Showing results of RANSAC...');tic;
     figure;
-    imshow([img1 img2]);
+    % imshow([img1 img2]);
     hold on;
     plot(data_orig(1,:),data_orig(2,:),'ro','LineWidth',2);
     plot(data_orig(4,:)+size(img1,2),data_orig(5,:),'ro','LineWidth',2);
@@ -252,7 +252,8 @@ fprintf('  Homography linear image blending (averaging)...');tic;
 linear_hom = imageblending(warped_img1,warped_img2);
 fprintf('done (%fs)\n',toc);
 figure;
-imshow(linear_hom);
+% imshow(linear_hom);
+imwrite(linear_hom, './images/result1.jpg');
 title('Image Stitching with global homography');
 
 %-------------------------
@@ -314,6 +315,7 @@ fprintf('  Moving DLT linear image blending (averaging)...');tic;
 linear_mdlt = imageblending(warped_img1,warped_img2);
 fprintf('done (%fs)\n',toc);
 figure;
-imshow(linear_mdlt);
+% imshow(linear_mdlt);
+imwrite(linear_mdlt, './images/result2.jpg');
 title('As-Projective-As-Possible Image Stitching with Moving DLT');
 fprintf('> Finished!.\n');
