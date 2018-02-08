@@ -46,23 +46,25 @@ svd(A)的精简版本svd(A, 0)在octave中有问题, 直接换成了svd(A), 不�
 ![](doc/svd.png)
 
 **2. 缺少包的问题**
-
+```
 error: 'randsample' undefined
+```
 
 需要安装image和statistics库.
-
+```
 pkg install -forge statistics
-
 pkg install -forge image
+```
 
-然后在进入octave之后, 加载image和statistics库:
-
+然后在进入octave之后, 加载image和statistics库:
+```
 octave:1>pkg load image
-
 octave:2>pkg load statistics
-
+```
 再运行main.
+```
 octave:3>main
+```
 
 这样就跑通了, 可以看到效果如图.
 ![](doc/demo.png)
@@ -81,42 +83,45 @@ images/case26/5.JPG
 换成自己要拼接的图片路径.
 
 再运行main, 会报错:
-
+```
 Keypoint detection and matching...error: invalid use of script /xxx/./vlfeat-0.9.14/toolbox/sift/vl_sift.m in index expression
+```
 
 查看对应目录下的vl_sift.m文件确实都是注释没有代码, 原因是拼接自己的图片需要使用vlfeat库, 而vlfeat库没有安装好(如果安装好, 会调用编译好的mex文件而不是这个源文件).
 
 **4. 编译vlfeat**
 
 那就为mac + octave环境编译vlfeat吧, 进入vlfeat-0.9.14目录, 执行make:
-
+```
 make MKOCTFILE=/usr/local/bin/mkoctfile ARCH=maci64
+```
 
 提示路径不对: /Developer/SDKs/MacOSX10.7.sdk
 
-修改Makefile把这个路径改成本地的XCode的路径
+修改Makefile把这个路径改成本地的XCode的路径
 :
+```
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-
-再进行编译, 提示链接错误:
+```
+再进行编译, 提示链接错误:
 ![](doc/vlfeat_link_error.jpeg)
+```
 make: *** [toolbox/mex/octave/vl_siftdescriptor.mex] Error 1
-
+```
 然后各种google都没有成功, 自己去vlfeat官网(http://www.vlfeat.org/download.html)下载了最新的0.9.21版本, 再进行编译安装:
-
+```
 make MKOCTFILE=/usr/local/bin/mkoctfile ARCH=maci64
-
+```
 报错:
-
+```
 cp: toolbox/mex/octave/mexmaci64/libvl.dylib: No such file or directory
-
-我不知道该怎么在Makefile里面创建目录, 那就手动创建目录好了:
-
+```
+我不知道该怎么在Makefile里面创建目录, 那就手动创建目录好了:
+```
 mkdir toolbox/mex
-
 mkdir toolbox/mex/octave
-
 mkdir toolbox/mex/octave/mexmaci64
+```
 
 再编译报错:
 ![](doc/vlfeat_type_error.jpeg)
@@ -124,7 +129,7 @@ mkdir toolbox/mex/octave/mexmaci64
 toolbox/mexutils.h:33:22: error: typedef redefinition with different types
       ('unsigned int' vs 'int')
 
-修改mexutils.h中的定义, 把int unsigned改成int, 再编译安装, 终于成功了!!!
+修改mexutils.h中的定义, 把int unsigned改成int, 再编译安装, 终于成功了!!!
 
 
 
