@@ -65,7 +65,7 @@ octave:2>pkg load statistics
 octave:3>main
 ```
 这样就跑通了, 可以看到效果如图.
-![](doc/demo.png)
+![](doc/demo.JPEG)
 ### 2.3 拼接自定义的图片
 demo中的图片是直接读取matlib的mat数据文件, 可是我需要拼接自己的图片, 需要修改下面这个地方, main.m文件中已经写好了.只要注释掉上面的部分, 打开下面的部分就可以了.
 ![](doc/comment_original.jpeg)
