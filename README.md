@@ -28,9 +28,9 @@ http://www.pyimagesearch.com/2016/12/19/install-opencv-3-on-macos-with-homebrew-
 echo $PATH发现我的python3有两个路径, 把其中的/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5路径去掉就好了(注意: 开始我没发现, 又pip3 install opencv-python了一下, 结果运行报告"highgui/src/window.cpp error: (-2) The function is not implemented"错误, 后来找到路径错误, 运行pip3 uninstall opencv-python才可以工作了)
 
 ## 2. 用APAP进行图像拼接
-参考知乎大神YaqiLYU的文章:
-https://www.zhihu.com/question/34535199
-下载了APAP(As Projective As Possible from:https://cs.adelaide.edu.au/~tjchin/apap/)的源代码, 发现在我的开发环境下(Mac + octave)跑不起来, 答应我家旦旦要给他做一个有两个旦旦画画的图片, 于是折腾了两个早上, 总算跑起来了, 效果不错.解决的问题有如下几个:
+参考知乎大神[YaqiLYU的文章](
+https://www.zhihu.com/question/34535199)
+下载了[APAP(As Projective As Possible)](https://cs.adelaide.edu.au/~tjchin/apap/)的源代码, 发现在我的开发环境下(Mac + octave)跑不起来, 答应我家旦旦要给他做一个有两个旦旦画画的图片, 于是折腾了两个早上, 总算跑起来了, 效果不错.解决的问题有如下几个:
 
 **1. octave对matlib兼容问题**
 
@@ -55,7 +55,6 @@ error: 'randsample' undefined
 pkg install -forge statistics
 pkg install -forge image
 ```
-
 然后在进入octave之后, 加载image和statistics库:
 ```
 octave:1>pkg load image
@@ -65,21 +64,18 @@ octave:2>pkg load statistics
 ```
 octave:3>main
 ```
-
 这样就跑通了, 可以看到效果如图.
 ![](doc/demo.png)
-
 **3. 拼接自定义的图片**
 
 demo中的图片是直接读取matlib的mat数据文件, 可是我需要拼接自己的图片, 需要修改下面这个地方, main.m文件中已经写好了.只要注释掉上面的部分, 打开下面的部分就可以了.
 ![](doc/comment_original.jpeg)
 ![](doc/uncomment.jpeg)
 注意加载的路径:
-
+```
 images/case26/4.JPG
-
 images/case26/5.JPG
-
+```
 换成自己要拼接的图片路径.
 
 再运行main, 会报错:
