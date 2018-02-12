@@ -2,6 +2,7 @@
 close all;
 clear all;
 clc;
+warning ("off", "all");
 
 %-------
 % Paths.
@@ -29,8 +30,8 @@ if exist('imageWarping','file')~=3 || exist('imageProjection','file')~=3  || exi
     
     % CERES solver and GLOG (both from google) should be installed in your
     % system in order to compile the following files.
-    mex ceresRigidError.cpp /usr/local/lib/libceres_shared.so /usr/local/lib/libglog.so -I/usr/include/eigen3;
-    mex ceresNonrigidError.cpp /usr/local/lib/libceres_shared.so /usr/local/lib/libglog.so -I/usr/include/eigen3;
+    mex ceresRigidError.cpp -lceres -lglog -L/usr/local/lib/ -I/usr/local/include/eigen3;
+    mex ceresNonrigidError.cpp -lceres -lglog -L/usr/local/lib/ -I/usr/local/include/eigen3;    
 end
 
 %----------------------
@@ -102,6 +103,11 @@ fprintf('done (%fs)\n',toc);
 imgs_pairs = combnk(1:num_imgs,2); % <-- Generating image pairs with all available image idexes.
 imgs_pairs = [imgs_pairs ones(size(imgs_pairs,1),1)]; % Last column indicates if the pair is valid or not.
                                 
+%imgs_pairs is 3x3 for three images
+%1, 2, 1;
+%1, 3, 1;
+%2, 3, 1;
+
 %-----------------------------------------------------
 % Keypoint detection and matching between image pairs.
 %-----------------------------------------------------
@@ -118,8 +124,10 @@ h  = cell(size(imgs_pairs,1),1);
 for i=1:size(imgs_pairs,1)
     
     % Read images.
-    img1 = imresize(imread(sprintf('%s%s',folder_name,dir_folder(imgs_pairs(i,1)).name)),scale);
-    img2 = imresize(imread(sprintf('%s%s',folder_name,dir_folder(imgs_pairs(i,2)).name)),scale);
+    img1_name = sprintf('%s%s',folder_name,dir_folder(imgs_pairs(i,1)).name);
+    img2_name = sprintf('%s%s',folder_name,dir_folder(imgs_pairs(i,2)).name);
+    img1 = imresize(imread(img1_name),scale);
+    img2 = imresize(imread(img2_name),scale);
 
     % Pre-warp images
     if exist('projection','var') && strcmp(projection,'cylinder') == 1
@@ -156,7 +164,7 @@ for i=1:size(imgs_pairs,1)
     % SIFT keypoint detection and matching.
     [kp1 ds1] = vl_sift(single(rgb2gray(img1)));
     [kp2 ds2] = vl_sift(single(rgb2gray(img2)));
-    matches = vl_ubcmatch(ds1,ds2,1.6);
+    matches = vl_ubcmatch(ds1, ds2, 1.6);
     
     % Normalise point distribution.
     data_orig{i} = [ kp1(1:2,matches(1,:)) ; ones(1,size(matches,2)) ; kp2(1:2,matches(2,:)) ; ones(1,size(matches,2)) ];
