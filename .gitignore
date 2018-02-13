@@ -20,3 +20,17 @@ aapap/mdlt/images/bresult2.jpg
 aapap/mdlt/images/crop.jpg
 aapap/mdlt/images/result1.jpg
 aapap/mdlt/images/result2.jpg
+aapap/bamdlt/getBlendMask.mex
+aapap/bamdlt/getBlendMask.o
+aapap/bamdlt/getLocation.mex
+aapap/bamdlt/imageProjection.mex
+aapap/bamdlt/imageProjection.o
+aapap/bamdlt/imageWarping.mex
+aapap/bamdlt/imageWarping.o
+aapap/bamdlt/images/glenelg/result2.jpg
+aapap/bamdlt/wsvd.mex
+aapap/bamdlt/wsvd.mexmaci64
+aapap/bamdlt/wsvd.mexw64
+aapap/bamdlt/wsvd.o
+aapap/bamdlt/images/glenelg/result3.jpg
+aapap/bamdlt/images/glenelg/result4.jpg

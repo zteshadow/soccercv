@@ -162,6 +162,18 @@ toolbox/mexutils.h:33:22: error: typedef redefinition with different types
 
 修改mexutils.h中的定义, 把int unsigned改成int, 再编译安装, 终于成功了!!!
 
+### 2.5 其他编译错误
+
+wsvd undefined, wsvd是自定义的函数, 这个错误是没有编译源文件wsvd.cpp, 可以参考mdlt项目中的main.m编译一下即可:
+```
+if exist('wsvd','file')~=3
+    mex ../wsvd.cpp;
+end
+```
+或者直接把结果拷贝过来使用.
+
+
+
 
 
 
