@@ -1,15 +1,16 @@
 //
-//  main.cpp
+//  Test.hpp
 //  SoccerStitch
 //
 //  Created by samuel on 23/02/2018.
 //  Copyright © 2018 baidu. All rights reserved.
 //
 
-#include "Test.hpp"
+#ifndef Test_hpp
+#define Test_hpp
 
-int main(int argc, const char * argv[])
-{
-    test();
-    return 0;
-}
+#include <stdio.h>
+
+int test(void);
+
+#endif /* Test_hpp */
