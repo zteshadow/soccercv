@@ -1,0 +1,158 @@
+
+图片添加矩形框:
+clc; close all; clear all;
+image = imread('/home/wangxiao/Pictures/image/gamersky_022origin_043_20147261368D.jpg');
+figure;imshow(image);
+hold on
+rectangle('Position',[100 100 100 100],'LineWidth',4,'EdgeColor','r');
+
+
+rectangle('position',[x,y,w,h])
+
+  0   46    0
+  46  0     47
+  0   47    0
+
+
+'conndef' undefined
+
+CERES solver and GLOG (both from google) should be installed in your
+
+brew install ceres-solver
+
+16.工程和研究分开2条线
+下面是工程线, 研究线如下:
+3张图片拼接的原理
+
+
+12. 设计三个手机的布局
+搞一个铝板, 三个手机摆好位置, 角度, 最后拼接一个全局的图片
+需要调教手机的角度
+试试不同的手机是否可行
+
+11. 截图出来
+images/glenelg/
+imwrite(linear_mdlt, './images/glenelg/result1.jpg');
+imwrite(canvas_img, './images/glenelg/result1.jpg');
+
+截成正常的矩形, 看看
+两张的ok了, 那么3张的呢?
+
+其实是分成了:
+%1, 2;
+%1, 3;
+%2, 3;
+3对, 对每对图片执行如下操作:
+
+cw =  783
+ch =  355
+ans =
+
+   1   1
+
+TL =
+
+  -212    12
+     1     1
+   163    -9
+
+BL =
+
+  -190   345
+     1   291
+   147   266
+
+TR =
+
+   194    11
+   373     1
+   570    -8
+
+BR =
+
+   212   285
+   375   291
+   548   315
+
+先将图片投影到球面:
+图片由4032x3024 -> 3739x2893
+
+
+10.编译vlfeat
+这里用到vlfeat了
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/usr/include
+
+先手动创建一个目录
+mkdir toolbox/mex/octave/mexmaci64
+make MKOCTFILE=/usr/local/bin/mkoctfile ARCH=maci64
+
+http://blog.csdn.net/abc8257595/article/details/44751219
+这个破玩意, 搞了好久, 以后遇到这种问题注意了, google了半天如果没有精确定位, 就别瞎找了.
+一点一点看问题:
+解决: 1.宏定义出问题, 2.链接bin/maci64/libvl.dylib找不到
+
+死活没搞定, 升级到21版本, 修改一个类型定义不同的错误, 就好了, 搞了周日, 周一两天, 马币
+vlfeat-0.9.21
+
+
+9.编译apap
+matlabpool问题, 参考下面:
+https://cn.mathworks.com/matlabcentral/answers/235524-how-to-replace-matlapool-by-parpool-in-my-code?s_tid=gn_loc_drop
+后来发现octabe不行, 直接删除了, 不要并发可以吧
+
+rng(0) -> rand('state',x)
+
+error: 'randsample' undefined
+install statistics package
+pkg list, 查看安装的包
+pkg install -forge statistics
+pkg load statistics
+可以工作了, 每次用之前都要加载: pkg load statistics, 是不是可以把这句写在代码里?
+pkg install -forge image
+
+warning: load_path xxx
+path, 查看现有的path设置
+这个warning其实不是错误, 老是抱warning比较烦, 可以用warning ("off", "all"); 关闭所有的warning
+
+整个编完跑起来, 发现主要解决的是matlib -> octave的问题, 如果是用matlib, 估计可以直接跑起来了.
+
+8.过滤关键点
+对于我自己的1, 2两张图片, 发现分为远景和地面两个panel, 我自己手动限制到一个地面panel, 试一下效果.
+这就需要在匹配之前过滤关键点, 把y坐标小于一半高度的点过滤掉.
+过滤ok了, 然并卵
+是时候开始apap了
+
+7.先按照AutoStitch
+一个(全局)单应性对齐+柱面或球面投影+光束平差+多频带融合为核心的老一代拼接算法
+做完, 目前我只做了单应矩阵
+投影, 融合没做
+
+6.两张图片拼接后右侧图片失真
+基本流程:图像采集->投影变换->特征点匹配->拼接对准->融合->反投影
+我貌似是没有做投影和融合
+
+那么该如何做投影?
+
+是不是要先做柱面投影?
+如何做?
+为什么是柱面投影?
+
+问题找到了:
+大神文章:https://www.zhihu.com/question/34535199
+
+这世界上从来没有完美,只有更好的算法。 Autostitch有两个必须满足的假设
+1)是要求图像直接的重疊区域可以近似一个平面,整个图像近似一个平面效果更好;
+2)是各次拍摄时相机光心近乎重合(其实可以合并为一个条件:重疊区域场景中没有深度变化)。
+如果不满足这两个假设,就会因为视差问题产生明显的伪影和对不齐(重影or模糊)。
+为了说明这个问题,跟我来做个小实验:假设电脑屏幕是背景,两个眼睛是两个相机(光心距约为6cm),伸出一根手指到眉心前
+10cm左右,闭起一只眼睛看手指,分别用左右眼看手指在屏幕中的位置会发现这个两个位置之间有
+间距,而且随着手指距离眼睛越近,这个间距也越大。这就是视差问题带来的图像拼接最大难点
+个单应性矩阵将场景中同一平面的像素点无缝对齐了,而位于其他平面的像素点却无法重合,这
+就是重影问题。
+--我的问题就是模糊了, 原因在于光心不重合, 因为相机不是绕着镜头垂线旋转的.
+
+
+5.球场拍照
+1.7m的三脚架+60cm的凳子, 2.3m, 那么3m的三脚架可能会满足需求?
+下次去琦逸足球场的拍摄台看一下, 是不是我要的效果, 那个台子有多高?
+

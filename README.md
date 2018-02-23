@@ -63,6 +63,25 @@ print(sys.path)
 嗯, 可以使用了. [参考资料](https://qinjiangbo.com/solve-problem-that-python3-cannot-load-modules-pip3-installed.html)
 
 
+### 1.5 c++, xcode开发环境
+
+主要问题就是设置路径.
+设置头文件路径:
+```
+进入“Build Settings”选项卡，在“Header Search Paths”栏中输入：“/usr/local/include
+```
+设置opencv动态库的路径:
+```
+进入“Build Settings”选项卡，在“Library Search Paths”栏中输入“xxx/release/lib”, 注意这是opencv安装编译时的release路径.
+```
+
+链接opencv动态库:
+```
+Build Phases -> Link Binary With Librarys, 添加'xxx/release/lib'路径下的各个模块的dylib[注意别加链接文件]
+```
+然后就可以使用了.
+
+
 ## 2. 用APAP进行图像拼接
 参考知乎大神[YaqiLYU的文章](
 https://www.zhihu.com/question/34535199)
