@@ -185,7 +185,7 @@ toolbox/mexutils.h:33:22: error: typedef redefinition with different types
 ```
 wsvd undefined
 ```
-wsvd是自定义的函数, 这个错误是没有编译源文件wsvd.cpp, 可以参考mdlt项目中的main.m编译一下即可:
+wsvd是自定义的函数, 这个错误是没有编译源文件wsvd.cpp, 可以参考mdlt项目中的main.m编译一下即可:
 ```
 if exist('wsvd','file')~=3
     mex ../wsvd.cpp;
@@ -199,15 +199,14 @@ end
 打算先并排用两个手机录制视频, 然后拼接这两个视频, 首先要解决的帧对齐问题, 打算用时间戳来进行对齐.
 
 ### 3.1 获取mov文件的创建时间
-这里说的创建时间并不是文件的创建时间, 而是写入多媒体文件的exif信息, 里面包含多媒体文件的创建时间, 创建的地点经度纬度等.
-google发现有libexif和exiv2两个开源库可以使用, exiv2是c++的, 所以选用这个库.到[github](https://github.com/Exiv2/exiv2)下载源代码进行编译, 注意在config的时候要打开对video的支持.
+这里说的创建时间并不是文件的创建时间, 而是写入多媒体文件的exif信息, 里面包含多媒体文件的创建时间, 创建的地点经度纬度等.google发现有libexif和exiv2两个开源库可以使用, exiv2是c++的, 所以选用这个库.到[github](https://github.com/Exiv2/exiv2)下载源代码进行编译, 注意在config的时候要打开对video的支持.
 ```
 make config
 ./configure --enable-video=yes
 make
 sudo make install
 ```
-安装成功后就可以使用Exiv2库读取mov文件的exif信息了.
+安装成功后就可以使用Exiv2库读取mov文件的exif信息了.
 引用头文件:
 ```
 ...
