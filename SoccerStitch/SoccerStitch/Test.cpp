@@ -33,6 +33,7 @@ int test(void)
     cout<<"width: "<<cap.get(CV_CAP_PROP_FRAME_WIDTH)<<endl;
     cout<<"height: "<<cap.get(CV_CAP_PROP_FRAME_HEIGHT)<<endl;
     cout<<"frame rate: "<<cap.get(CV_CAP_PROP_FPS)<<endl;
+    cout<<"total frame: "<<cap.get(CV_CAP_PROP_FRAME_COUNT)<<endl;
     
 #if 0
     for(;;)

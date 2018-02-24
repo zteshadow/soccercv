@@ -7,9 +7,13 @@
 //
 
 #include "Test.hpp"
+#include "SSMeta.hpp"
 
 int main(int argc, const char * argv[])
 {
-    test();
+    //test();
+    //SSMeta::getVideoTime("/Users/majie/Think/repository/soccercv/data/baidu.mov");
+    SSMeta::getImageTime("/Users/majie/Think/repository/soccercv/1.jpg");
+    
     return 0;
 }

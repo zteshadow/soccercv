@@ -21,6 +21,7 @@
 		6CC9D1C8203FA6BB00B7AF25 /* cv2.so in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CC9D1C7203FA6BB00B7AF25 /* cv2.so */; };
 		6CC9D1CA203FA74B00B7AF25 /* libopencv_imgcodecs.3.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CC9D1C9203FA74B00B7AF25 /* libopencv_imgcodecs.3.3.0.dylib */; };
 		6CC9D1CD203FAF9000B7AF25 /* Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9D1CB203FAF9000B7AF25 /* Test.cpp */; };
+		6CC9D1E42041534700B7AF25 /* SSMeta.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9D1E22041534700B7AF25 /* SSMeta.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -52,6 +53,8 @@
 		6CC9D1C9203FA74B00B7AF25 /* libopencv_imgcodecs.3.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgcodecs.3.3.0.dylib; path = "../../../../Downloads/opencv-3.3.0/release/lib/libopencv_imgcodecs.3.3.0.dylib"; sourceTree = "<group>"; };
 		6CC9D1CB203FAF9000B7AF25 /* Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Test.cpp; sourceTree = "<group>"; };
 		6CC9D1CC203FAF9000B7AF25 /* Test.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Test.hpp; sourceTree = "<group>"; };
+		6CC9D1E22041534700B7AF25 /* SSMeta.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SSMeta.cpp; sourceTree = "<group>"; };
+		6CC9D1E32041534700B7AF25 /* SSMeta.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SSMeta.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +103,8 @@
 				6CC9D1AB203FA1F500B7AF25 /* main.cpp */,
 				6CC9D1CB203FAF9000B7AF25 /* Test.cpp */,
 				6CC9D1CC203FAF9000B7AF25 /* Test.hpp */,
+				6CC9D1E22041534700B7AF25 /* SSMeta.cpp */,
+				6CC9D1E32041534700B7AF25 /* SSMeta.hpp */,
 			);
 			path = SoccerStitch;
 			sourceTree = "<group>";
@@ -180,6 +185,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CC9D1E42041534700B7AF25 /* SSMeta.cpp in Sources */,
 				6CC9D1AC203FA1F500B7AF25 /* main.cpp in Sources */,
 				6CC9D1CD203FAF9000B7AF25 /* Test.cpp in Sources */,
 			);
@@ -236,9 +242,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-lexiv2";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -285,8 +293,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-lexiv2";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -298,7 +308,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2TV8FB59SP;
 				HEADER_SEARCH_PATHS = /usr/local/include;
-				LIBRARY_SEARCH_PATHS = "/Users/majie/Downloads/opencv-3.3.0/release/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/majie/Downloads/opencv-3.3.0/release/lib",
+					/usr/local/lib,
+				);
+				OTHER_LDFLAGS = "-lexiv2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -310,7 +324,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2TV8FB59SP;
 				HEADER_SEARCH_PATHS = /usr/local/include;
-				LIBRARY_SEARCH_PATHS = "/Users/majie/Downloads/opencv-3.3.0/release/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/majie/Downloads/opencv-3.3.0/release/lib",
+					/usr/local/lib,
+				);
+				OTHER_LDFLAGS = "-lexiv2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
