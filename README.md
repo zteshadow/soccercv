@@ -192,3 +192,52 @@ if exist('wsvd','file')~=3
 end
 ```
 或者直接把结果拷贝过来使用.
+
+
+## 3. 拼接两个.mov视频文件
+
+打算先并排用两个手机录制视频, 然后拼接这两个视频, 首先要解决的帧对齐问题, 打算用时间戳来进行对齐.
+
+### 3.1 获取mov文件的创建时间
+这里说的创建时间并不是文件的创建时间, 而是写入多媒体文件的exif信息, 里面包含多媒体文件的创建时间, 创建的地点经度纬度等.
+google发现有libexif和exiv2两个开源库可以使用, exiv2是c++的, 所以选用这个库.到[github](https://github.com/Exiv2/exiv2)下载源代码进行编译, 注意在config的时候要打开对video的支持.
+```
+make config
+./configure --enable-video=yes
+make
+sudo make install
+```
+安装成功后就可以使用Exiv2库读取mov文件的exif信息了.
+引用头文件:
+```
+...
+#include <exiv2/quicktimevideo.hpp>
+...
+```
+读取mov文件
+```
+...
+BasicIo::AutoPtr data = ImageFactory::createIo(fname);
+...
+```
+用文件生成QuickTimeVideo对象:
+```
+...
+QuickTimeVideo *video = new QuickTimeVideo(data);
+...
+```
+然后就可以读取tag信息了.
+```
+...
+video->readMetadata();
+XmpData xmp = video->xmpData();
+for (Exiv2::XmpData::const_iterator md = xmp.begin(); md != xmp.end(); ++md)
+{
+    //md->key();
+    //md->typeName();
+    //md->value()
+    ...
+}
+...
+```
+具体代码参考SSMeta.cpp文件中的getVideoTime函数.

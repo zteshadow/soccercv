@@ -12,8 +12,8 @@
 int main(int argc, const char * argv[])
 {
     //test();
-    //SSMeta::getVideoTime("/Users/majie/Think/repository/soccercv/data/baidu.mov");
-    SSMeta::getImageTime("/Users/majie/Think/repository/soccercv/1.jpg");
+    SSMeta::getVideoTime("/Users/majie/Think/repository/soccercv/data/baidu.mov");
+    //SSMeta::getImageTime("/Users/majie/Think/repository/soccercv/1.jpg");
     
     return 0;
 }
