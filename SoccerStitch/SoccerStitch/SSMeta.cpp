@@ -10,11 +10,44 @@
 #include <exiv2/exiv2.hpp>
 #include <exiv2/quicktimevideo.hpp>
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace Exiv2;
 using namespace std;
 
-int SSMeta::getImageTime(const char *fname)
+long SSMeta::getCreateTime(const char *movFile)
+{
+    long value = -1;
+    
+    BasicIo::AutoPtr data = ImageFactory::createIo(movFile);
+    if(data.get() == 0)
+    {
+        cout<<"read file error."<<endl;
+        return -1;
+    }
+    
+    QuickTimeVideo *video = new QuickTimeVideo(data);
+    if (video)
+    {
+        video->readMetadata();
+        
+        XmpData xmp = video->xmpData();
+        if (xmp.empty())
+        {
+            cout<<"xmp empty error"<<endl;
+        }
+        else
+        {
+            Xmpdatum item = xmp["Xmp.video.DateUTC"];
+            value = item.toLong();
+        }
+    }
+
+    return value;
+}
+
+int SSMeta::getImageMeta(const char *fname)
 {
     Image::AutoPtr image = ImageFactory::open(fname);
     if(image.get() == 0)
@@ -45,7 +78,7 @@ int SSMeta::getImageTime(const char *fname)
     return 0;
 }
 
-int SSMeta::getVideoTime(const char *fname)
+int SSMeta::getVideoMeta(const char *fname)
 {
     BasicIo::AutoPtr data = ImageFactory::createIo(fname);
     if(data.get() == 0)
@@ -55,7 +88,6 @@ int SSMeta::getVideoTime(const char *fname)
     }
  
     QuickTimeVideo *video = new QuickTimeVideo(data);
-    
     cout<<"open ok: "<<video->good()<<endl;
     
     video->readMetadata();
@@ -77,7 +109,7 @@ int SSMeta::getVideoTime(const char *fname)
     IptcData iptc = video->iptcData();
     if (iptc.empty())
     {
-        cout<<"exif empty error!"<<endl;
+        cout<<"iptc empty error!"<<endl;
     }
     else
     {
@@ -98,7 +130,6 @@ int SSMeta::getVideoTime(const char *fname)
     else
     {
         cout<<"data count: "<<xmp.count()<<endl;
-        
         for (Exiv2::XmpData::const_iterator md = xmp.begin(); md != xmp.end(); ++md)
         {
             std::cout << std::setfill(' ') << std::left
@@ -116,4 +147,3 @@ int SSMeta::getVideoTime(const char *fname)
     
     return 0;
 }
-

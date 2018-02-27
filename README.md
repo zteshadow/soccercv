@@ -239,4 +239,31 @@ for (Exiv2::XmpData::const_iterator md = xmp.begin(); md != xmp.end(); ++md)
 }
 ...
 ```
-具体代码参考SSMeta.cpp文件中的getVideoTime函数.
+具体代码参考SSMeta.cpp文件中的getVideoTime函数.注意得到的是UTC, 格式是年月日时分秒+TimeZone信息[参考](https://www.w3.org/TR/NOTE-datetime)
+
+这里有个有趣的事情, 我根据读取到的秒数转换成可读日期是这样的:
+```
+Sat Feb  5 14:52:49 2084
+```
+时间是对的, 但是日期和年是不对的, 应该是2018年, 为啥搞到2084年去了, google了半天才发现, 原来这个秒数不是从1970年开始的, 而是1904年, 那么为啥是1904年而不是1900年呢, 这里面有个故事:
+UTC时间是1970年1月1日0时0分0秒算起的秒数.
+
+微软的excel支持两个版本: 1900 date system和1904 date system, 因为他的早起竞争对手Lotus1-2-3用的是1900 date syste, 所谓的1900 date system是指记录从1900年1月1日0时开始的整数.
+
+```
+...
+Because of the design of early Macintosh computers, dates before January 1, 1904 were not supported. This design was intended to prevent problems related to the fact that 1900 was not a leap year.
+...
+```
+这里有一段话是说Macintosh使用的是1904年1月1日作为基准时间, 原因是1900年不是一个闰年.
+两个date system相差4年1天(1,462 days).
+早起的Macintosh需要支持130年的范围, 而生日从19xx年也就是20世纪开始, 到21世纪的200年里, 能被4整除但是不是闰年的只有1900年, 所以没有用1900年作为epoch, 又因为1900年后1904年是第一个leap year, 所以用的是1904年1月1日作为epoch.
+
+而1900年不是闰年(leap year)Microsoft的excel是怎么处理的呢? 他们不处理, 因此输入1900年2月29日是合法的, 为毛犯这样的错误呢? 为了兼容对手的错误, excel的对手是Lotus1-2-3, 而Lotus有这个问题, 所以microsoft明知道有bug也全盘保留了.
+
+那为毛Lotus会有这个bug呢? 他们的工程师太二吗?非也.
+```
+...
+“Yeah, but probably an intentional one. Lotus had to fit in 640K. That’s not a lot of memory. If you ignore 1900, you can figure out if a given year is a leap year just by looking to see if the rightmost two bits are zero. That’s really fast and easy.
+...
+```

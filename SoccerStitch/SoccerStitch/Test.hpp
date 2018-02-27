@@ -13,4 +13,6 @@
 
 int test(void);
 
+int stitch_test();
+
 #endif /* Test_hpp */

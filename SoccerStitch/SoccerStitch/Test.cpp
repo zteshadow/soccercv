@@ -13,16 +13,22 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv/cvaux.hpp>
 #include <fstream>
+#include "SSNormalStitcher.hpp"
 
 using namespace std;
 using namespace cv;
 
 #define BYTE unsigned char
 
+int matchFrame(const char *file1, const char *file2, size_t &file1Start, size_t &file2Start, size_t &count)
+{
+    return 0;
+}
+
 int test(void)
 {
-    VideoCapture cap("/Users/majie/Think/repository/soccercv/data/baidu.mov"); // open the default camera
-    
+    const char *file1 = "/Users/majie/Think/repository/soccercv/data/baidu.mov";
+    VideoCapture cap(file1); // open the default camera
     if (!cap.isOpened())  // check if we succeeded
     {
         return -1;
@@ -60,5 +66,55 @@ int test(void)
 
     waitKey(0);
     
+    return 0;
+}
+
+int stitch_test()
+{
+    const char *file1 = "/Users/majie/Think/repository/soccercv/data/baidu.mov";
+    VideoCapture cap1(file1); // open the default camera
+    if (!cap1.isOpened())  // check if we succeeded
+    {
+        return -1;
+    }
+    
+    const char *file2 = "/Users/majie/Think/repository/soccercv/data/baidu.mov";
+    VideoCapture cap2(file2);
+    if (!cap2.isOpened())  // check if we succeeded
+    {
+        return -1;
+    }
+    
+    size_t startOfFile1, startOfFile2, count;
+    int value = matchFrame(file1, file2, startOfFile1, startOfFile2, count);
+    if (value >= 0) //match成功
+    {
+        //用中间帧做参考帧, 生成stitcher
+        Mat refFrame1, refFrame2;
+        
+        size_t refIndex1 = startOfFile1 + count / 2;
+        cap1.set(CAP_PROP_POS_FRAMES, refIndex1);//从此时的帧数开始获取帧
+        cap1 >> refFrame1;
+        
+        size_t refIndex2 = startOfFile2 + count / 2;
+        cap2.set(CAP_PROP_POS_FRAMES, refIndex2);//从此时的帧数开始获取帧
+        cap2 >> refFrame2;
+        
+        SSNormalStitcher stitcher = SSNormalStitcher(refFrame1, refFrame2);
+        
+        cap1.set(CAP_PROP_POS_FRAMES, startOfFile1);//从此时的帧数开始获取帧
+        cap2.set(CAP_PROP_POS_FRAMES, startOfFile2);//从此时的帧数开始获取帧
+        for (size_t i = 0; i < count; i++) //逐帧读取
+        {
+            Mat frame1, frame2;
+            
+            cap1 >> frame1;
+            cap2 >> frame2;
+            
+            Mat output = stitcher.stitch(frame1, frame2);
+            
+        }
+    }
+
     return 0;
 }

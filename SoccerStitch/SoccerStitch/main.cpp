@@ -8,12 +8,18 @@
 
 #include "Test.hpp"
 #include "SSMeta.hpp"
+#include <iostream>
+
+using namespace std;
 
 int main(int argc, const char * argv[])
 {
+    const char *mov = "/Users/majie/Think/repository/soccercv/data/baidu.mov";
     //test();
-    SSMeta::getVideoTime("/Users/majie/Think/repository/soccercv/data/baidu.mov");
+    SSMeta::getVideoMeta(mov);
     //SSMeta::getImageTime("/Users/majie/Think/repository/soccercv/1.jpg");
+    long startTime = SSMeta::getCreateTime(mov);
+    cout<<"start time: "<<startTime<<endl;
     
     return 0;
 }
