@@ -13,6 +13,11 @@ SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
     
 }
 
+void SSNormalStitcher::getOutputSize(int &width, int &height)
+{
+    
+}
+
 Mat SSNormalStitcher::stitch(Mat &frame1, Mat frame2)
 {
     Mat frame = Mat();

@@ -19,6 +19,7 @@ class SSNormalStitcher
 public:
     SSNormalStitcher(Mat &refFrame1, Mat &refFrame2);
     Mat stitch(Mat &frame1, Mat frame2);
+    void getOutputSize(int &width, int &height);
     
 private:
     int matchMov(const char *file1, int &index1, const char *file2, int &index2);

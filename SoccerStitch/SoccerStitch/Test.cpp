@@ -13,7 +13,9 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv/cvaux.hpp>
 #include <fstream>
+
 #include "SSNormalStitcher.hpp"
+#include "SSMovWriter.hpp"
 
 using namespace std;
 using namespace cv;
@@ -101,7 +103,11 @@ int stitch_test()
         cap2 >> refFrame2;
         
         SSNormalStitcher stitcher = SSNormalStitcher(refFrame1, refFrame2);
+        int width, height;
+        stitcher.getOutputSize(width, height);
         
+        SSMovWriter writer(width, height);
+        writer.open("/Users/majie/Think/repository/soccercv/data/output.mov");
         cap1.set(CAP_PROP_POS_FRAMES, startOfFile1);//从此时的帧数开始获取帧
         cap2.set(CAP_PROP_POS_FRAMES, startOfFile2);//从此时的帧数开始获取帧
         for (size_t i = 0; i < count; i++) //逐帧读取
@@ -113,7 +119,9 @@ int stitch_test()
             
             Mat output = stitcher.stitch(frame1, frame2);
             
+            writer.write(output);
         }
+        writer.close();
     }
 
     return 0;
