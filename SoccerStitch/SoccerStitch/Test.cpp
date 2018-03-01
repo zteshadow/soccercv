@@ -10,8 +10,11 @@
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#include <opencv2/stitching.hpp>
+#include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv/cvaux.hpp>
+
 #include <fstream>
 
 #include "SSNormalStitcher.hpp"
@@ -71,7 +74,30 @@ int test(void)
     return 0;
 }
 
-int stitch_test()
+void stitch_test(void)
+{
+    vector<Mat> list;
+    
+    Mat image1 = imread("/Users/majie/Think/repository/soccercv/1.jpg");
+    list.push_back(image1);
+
+    Mat image2 = imread("/Users/majie/Think/repository/soccercv/2.jpg");
+    list.push_back(image2);
+
+    Mat pano;
+    Ptr<Stitcher> stitcher = Stitcher::create(Stitcher::PANORAMA, true);
+    
+    Stitcher::Status status = stitcher->stitch(list, pano);
+    if (status != Stitcher::OK)
+    {
+        cout << "Can't stitch images, error code = " << int(status) << endl;
+        return;
+    }
+    imwrite("/Users/majie/Think/repository/soccercv/tmp.jpg", pano);
+    return;
+}
+
+int my_stitch_test()
 {
     const char *file1 = "/Users/majie/Think/repository/soccercv/data/baidu.mov";
     VideoCapture cap1(file1); // open the default camera

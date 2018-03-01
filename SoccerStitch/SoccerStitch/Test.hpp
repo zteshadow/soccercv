@@ -13,6 +13,8 @@
 
 int test(void);
 
-int stitch_test();
+void stitch_test(void);
+
+int my_stitch_test(void);
 
 #endif /* Test_hpp */

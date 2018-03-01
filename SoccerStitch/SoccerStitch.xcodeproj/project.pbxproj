@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6C04E8AD20444B8F00160255 /* SSNormalStitcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C04E8AB20444B8F00160255 /* SSNormalStitcher.cpp */; };
 		6C04E8B12046412900160255 /* SSMovWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C04E8AF2046412900160255 /* SSMovWriter.cpp */; };
+		6C690BAF204767A8005E58DA /* libopencv_stitching.3.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C690BAE204767A7005E58DA /* libopencv_stitching.3.3.0.dylib */; };
 		6CC9D1AC203FA1F500B7AF25 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9D1AB203FA1F500B7AF25 /* main.cpp */; };
 		6CC9D1B9203FA60C00B7AF25 /* libopencv_videostab.3.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CC9D1B3203FA60C00B7AF25 /* libopencv_videostab.3.3.0.dylib */; };
 		6CC9D1BA203FA60C00B7AF25 /* libopencv_highgui.3.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CC9D1B4203FA60C00B7AF25 /* libopencv_highgui.3.3.0.dylib */; };
@@ -44,6 +45,7 @@
 		6C04E8AF2046412900160255 /* SSMovWriter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SSMovWriter.cpp; sourceTree = "<group>"; };
 		6C04E8B02046412900160255 /* SSMovWriter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SSMovWriter.hpp; sourceTree = "<group>"; };
 		6C04E8B2204641CF00160255 /* SSTypeDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSTypeDef.h; sourceTree = "<group>"; };
+		6C690BAE204767A7005E58DA /* libopencv_stitching.3.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_stitching.3.3.0.dylib; path = "../../../../Downloads/opencv-3.3.0/release/lib/libopencv_stitching.3.3.0.dylib"; sourceTree = "<group>"; };
 		6CC9D1A8203FA1F500B7AF25 /* SoccerStitch */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SoccerStitch; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CC9D1AB203FA1F500B7AF25 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		6CC9D1B3203FA60C00B7AF25 /* libopencv_videostab.3.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_videostab.3.3.0.dylib; path = "../../../../Downloads/opencv-3.3.0/release/lib/libopencv_videostab.3.3.0.dylib"; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C690BAF204767A8005E58DA /* libopencv_stitching.3.3.0.dylib in Frameworks */,
 				6CC9D1CA203FA74B00B7AF25 /* libopencv_imgcodecs.3.3.0.dylib in Frameworks */,
 				6CC9D1BC203FA60C00B7AF25 /* libopencv_imgproc.3.3.0.dylib in Frameworks */,
 				6CC9D1C8203FA6BB00B7AF25 /* cv2.so in Frameworks */,
@@ -124,6 +127,7 @@
 		6CC9D1B2203FA60B00B7AF25 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6C690BAE204767A7005E58DA /* libopencv_stitching.3.3.0.dylib */,
 				6CC9D1C9203FA74B00B7AF25 /* libopencv_imgcodecs.3.3.0.dylib */,
 				6CC9D1C7203FA6BB00B7AF25 /* cv2.so */,
 				6CC9D1BF203FA69F00B7AF25 /* libopencv_calib3d.3.3.0.dylib */,
