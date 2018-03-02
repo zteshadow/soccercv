@@ -14,6 +14,7 @@
 int test(void);
 
 void stitch_test(void);
+void stitch_detail_test(void);
 
 int my_stitch_test(void);
 

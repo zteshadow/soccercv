@@ -14,7 +14,8 @@ using namespace std;
 
 int main(int argc, const char * argv[])
 {
-    stitch_test();
+    //stitch_test();
+    stitch_detail_test();
     
     //const char *mov = "/Users/majie/Think/repository/soccercv/data/baidu.mov";
     //test();

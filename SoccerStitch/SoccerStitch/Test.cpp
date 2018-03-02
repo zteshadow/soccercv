@@ -20,10 +20,10 @@
 #include "SSNormalStitcher.hpp"
 #include "SSMovWriter.hpp"
 
+#define BYTE unsigned char
+
 using namespace std;
 using namespace cv;
-
-#define BYTE unsigned char
 
 int matchFrame(const char *file1, const char *file2, size_t &file1Start, size_t &file2Start, size_t &count)
 {
@@ -72,6 +72,11 @@ int test(void)
     waitKey(0);
     
     return 0;
+}
+
+void stitch_detail_test(void)
+{
+    SSNormalStitcher::test();
 }
 
 void stitch_test(void)

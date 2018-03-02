@@ -272,3 +272,6 @@ Because of the design of early Macintosh computers, dates before January 1, 1904
 “Yeah, but probably an intentional one. Lotus had to fit in 640K. That’s not a lot of memory. If you ignore 1900, you can figure out if a given year is a leap year just by looking to see if the rightmost two bits are zero. That’s really fast and easy.
 ...
 ```
+
+### 3.2 opencv中的Stitch
+对于图像拼接, opencv提供了2种使用方式, 封装好的[Stitcher](https://docs.opencv.org/3.2.0/d8/d19/tutorial_stitcher.html)类和自定义各个环节的[Stitch detail](https://github.com/opencv/opencv/blob/master/samples/cpp/stitching_detailed.cpp).既然这样, 那我可以参考detail来做我自己的stitcher了.
