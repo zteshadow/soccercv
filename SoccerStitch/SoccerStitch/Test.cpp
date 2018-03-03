@@ -76,6 +76,12 @@ int test(void)
 
 void stitch_detail_test(void)
 {
+    //Mat referenceImage1, referenceImage2;
+    //SSNormalStitcher stitcher = SSNormalStitcher(referenceImage1, referenceImage2);
+    
+    //Mat image1, image2;
+    //Mat result = stitcher.stitch(image1, image2);
+    
     SSNormalStitcher::test();
 }
 

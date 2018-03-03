@@ -13,6 +13,7 @@
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
+using namespace std;
 
 class SSNormalStitcher
 {
@@ -24,6 +25,10 @@ public:
     void getOutputSize(int &width, int &height);
     
 private:
+    double work_scale, seam_scale, compose_scale;
+    float warped_image_scale;
+    //vector<detail::CameraParams> cameras;
+    
     int matchMov(const char *file1, int &index1, const char *file2, int &index2);
 };
 
