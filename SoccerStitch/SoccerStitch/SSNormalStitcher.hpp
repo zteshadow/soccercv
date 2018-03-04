@@ -11,8 +11,10 @@
 
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
+#include <opencv2/stitching/detail/camera.hpp>
 
 using namespace cv;
+using namespace cv::detail;
 using namespace std;
 
 class SSNormalStitcher
@@ -25,9 +27,14 @@ public:
     void getOutputSize(int &width, int &height);
     
 private:
+    bool is_work_scale_set, is_seam_scale_set, is_compose_scale_set;
     double work_scale, seam_scale, compose_scale;
+    
     float warped_image_scale;
-    //vector<detail::CameraParams> cameras;
+    double seam_work_aspect;
+    
+    //
+    vector<CameraParams> cameras;
     
     int matchMov(const char *file1, int &index1, const char *file2, int &index2);
 };

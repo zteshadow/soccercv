@@ -66,12 +66,15 @@ bool timelapse = false; //定时自动间隔拍照
 SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
 {
     work_scale = 1;
+    is_work_scale_set = false;
+    
     seam_scale = 1;
+    is_seam_scale_set = false;
+    
     compose_scale = 1;
-
-#if ENABLE_LOG
-    int64 app_start_time = getTickCount();
-#endif
+    is_compose_scale_set = false;
+    
+    seam_work_aspect = 1;
     
     vector<Mat> images;
     vector<String> img_names;
@@ -86,9 +89,6 @@ SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
     
     int num_images = static_cast<int>(images.size());
     
-    //double work_scale = 1, seam_scale = 1, compose_scale = 1;
-    bool is_work_scale_set = false, is_seam_scale_set = false, is_compose_scale_set = false;
-    
     LOGLN("Finding features...");
     
 #if ENABLE_LOG
@@ -101,7 +101,6 @@ SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
     Mat full_img, img;
     vector<ImageFeatures> features(num_images);
     vector<Size> full_img_sizes(num_images);
-    double seam_work_aspect = 1;
     
     for (int i = 0; i < num_images; ++i)
     {
@@ -199,7 +198,6 @@ SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
     else
         estimator = makePtr<HomographyBasedEstimator>();
     
-    vector<CameraParams> cameras;
     if (!(*estimator)(features, pairwise_matches, cameras))
     {
         cout << "Homography estimation failed.\n";
@@ -262,79 +260,64 @@ SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
         for (size_t i = 0; i < cameras.size(); ++i)
             cameras[i].R = rmats[i];
     }
+
+    return ;
+}
+
+void SSNormalStitcher::getOutputSize(int &width, int &height)
+{
+    
+}
+
+Mat SSNormalStitcher::stitch(Mat &frame1, Mat frame2)
+{
+    Mat frame = Mat();
+ 
+#if 1
+    vector<Mat> images, full_images;
+    
+    full_images.push_back(frame1);
+    full_images.push_back(frame2);
+    images.push_back(frame1);
+    images.push_back(frame2);
+    
+    Mat full_img, img;
+    int num_images = static_cast<int>(images.size());
+    
+    vector<Size> full_img_sizes(num_images);
+    //init resize & save size
+    for (int i = 0; i < num_images; i++)
+    {
+        full_img_sizes[i] = full_images[i].size();
+        resize(images[i], img, Size(), seam_scale, seam_scale, INTER_CUBIC);
+        images[i] = img.clone();
+    }
+    
+    //有可能下面是根据上面得到的参数拼接图片了
     
     LOGLN("Warping images (auxiliary)... ");
-#if ENABLE_LOG
-    t = getTickCount();
-#endif
     
     vector<Point> corners(num_images);
     vector<UMat> masks_warped(num_images);
     vector<UMat> images_warped(num_images);
     vector<Size> sizes(num_images);
-    vector<UMat> masks(num_images);
+    vector<UMat> masks(num_images); //not needed
     
     // Preapre images masks
     for (int i = 0; i < num_images; ++i)
     {
-        masks[i].create(images[i].size(), CV_8U);
+        masks[i].create(images[i].size(), CV_8U); //注意这里的images[]是经过缩放的, 非原图
         masks[i].setTo(Scalar::all(255));
     }
     
     // Warp images and their masks
     
     Ptr<WarperCreator> warper_creator;
-#ifdef HAVE_OPENCV_CUDAWARPING
-    if (try_cuda && cuda::getCudaEnabledDeviceCount() > 0)
-    {
-        if (warp_type == "plane")
-            warper_creator = makePtr<cv::PlaneWarperGpu>();
-        else if (warp_type == "cylindrical")
-            warper_creator = makePtr<cv::CylindricalWarperGpu>();
-        else if (warp_type == "spherical")
-            warper_creator = makePtr<cv::SphericalWarperGpu>();
-    }
-    else
-#endif
-    {
-        if (warp_type == "plane")
-            warper_creator = makePtr<cv::PlaneWarper>();
-        else if (warp_type == "affine")
-            warper_creator = makePtr<cv::AffineWarper>();
-        else if (warp_type == "cylindrical")
-            warper_creator = makePtr<cv::CylindricalWarper>();
-        else if (warp_type == "spherical")
-            warper_creator = makePtr<cv::SphericalWarper>();
-        else if (warp_type == "fisheye")
-            warper_creator = makePtr<cv::FisheyeWarper>();
-        else if (warp_type == "stereographic")
-            warper_creator = makePtr<cv::StereographicWarper>();
-        else if (warp_type == "compressedPlaneA2B1")
-            warper_creator = makePtr<cv::CompressedRectilinearWarper>(2.0f, 1.0f);
-        else if (warp_type == "compressedPlaneA1.5B1")
-            warper_creator = makePtr<cv::CompressedRectilinearWarper>(1.5f, 1.0f);
-        else if (warp_type == "compressedPlanePortraitA2B1")
-            warper_creator = makePtr<cv::CompressedRectilinearPortraitWarper>(2.0f, 1.0f);
-        else if (warp_type == "compressedPlanePortraitA1.5B1")
-            warper_creator = makePtr<cv::CompressedRectilinearPortraitWarper>(1.5f, 1.0f);
-        else if (warp_type == "paniniA2B1")
-            warper_creator = makePtr<cv::PaniniWarper>(2.0f, 1.0f);
-        else if (warp_type == "paniniA1.5B1")
-            warper_creator = makePtr<cv::PaniniWarper>(1.5f, 1.0f);
-        else if (warp_type == "paniniPortraitA2B1")
-            warper_creator = makePtr<cv::PaniniPortraitWarper>(2.0f, 1.0f);
-        else if (warp_type == "paniniPortraitA1.5B1")
-            warper_creator = makePtr<cv::PaniniPortraitWarper>(1.5f, 1.0f);
-        else if (warp_type == "mercator")
-            warper_creator = makePtr<cv::MercatorWarper>();
-        else if (warp_type == "transverseMercator")
-            warper_creator = makePtr<cv::TransverseMercatorWarper>();
-    }
-    
+    warper_creator = makePtr<cv::SphericalWarper>();
     if (!warper_creator)
     {
         cout << "Can't create the following warper '" << warp_type << "'\n";
-        return;
+        return frame;
     }
     
     Ptr<RotationWarper> warper = warper_creator->create(static_cast<float>(warped_image_scale * seam_work_aspect));
@@ -356,8 +339,6 @@ SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
     vector<UMat> images_warped_f(num_images);
     for (int i = 0; i < num_images; ++i)
         images_warped[i].convertTo(images_warped_f[i], CV_32F);
-    
-    LOGLN("Warping images, time: " << ((getTickCount() - t) / getTickFrequency()) << " sec");
     
     Ptr<ExposureCompensator> compensator = ExposureCompensator::createDefault(expos_comp_type);
     compensator->feed(corners, images_warped, masks_warped);
@@ -392,7 +373,7 @@ SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
     if (!seam_finder)
     {
         cout << "Can't create the following seam finder '" << seam_find_type << "'\n";
-        return;
+        return frame;
     }
     
     seam_finder->find(images_warped_f, corners, masks_warped);
@@ -404,10 +385,6 @@ SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
     masks.clear();
     
     LOGLN("Compositing...");
-#if ENABLE_LOG
-    t = getTickCount();
-#endif
-    
     Mat img_warped, img_warped_s;
     Mat dilated_mask, seam_mask, mask, mask_warped;
     Ptr<Blender> blender;
@@ -417,10 +394,8 @@ SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
     
     for (int img_idx = 0; img_idx < num_images; ++img_idx)
     {
-        LOGLN("Compositing image #" << indices[img_idx]+1);
-        
         // Read image and resize it if necessary
-        full_img = imread(img_names[img_idx]);
+        full_img = full_images[img_idx];
         if (!is_compose_scale_set)
         {
             if (compose_megapix > 0)
@@ -516,22 +491,6 @@ SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
         }
         
         // Blend the current image
-        if (timelapse)
-        {
-            timelapser->process(img_warped_s, Mat::ones(img_warped_s.size(), CV_8UC1), corners[img_idx]);
-            String fixedFileName;
-            size_t pos_s = String(img_names[img_idx]).find_last_of("/\\");
-            if (pos_s == String::npos)
-            {
-                fixedFileName = "fixed_" + img_names[img_idx];
-            }
-            else
-            {
-                fixedFileName = "fixed_" + String(img_names[img_idx]).substr(pos_s + 1, String(img_names[img_idx]).length() - pos_s);
-            }
-            imwrite(fixedFileName, timelapser->getDst());
-        }
-        else
         {
             blender->feed(img_warped_s, mask_warped, corners[img_idx]);
         }
@@ -541,173 +500,6 @@ SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
     {
         Mat result, result_mask;
         blender->blend(result, result_mask);
-        
-        LOGLN("Compositing, time: " << ((getTickCount() - t) / getTickFrequency()) << " sec");
-        
-        imwrite(result_name, result);
-    }
-    
-    LOGLN("Finished, total time: " << ((getTickCount() - app_start_time) / getTickFrequency()) << " sec");
-    
-    return ;
-}
-
-void SSNormalStitcher::getOutputSize(int &width, int &height)
-{
-    
-}
-
-Mat SSNormalStitcher::stitch(Mat &frame1, Mat frame2)
-{
-    Mat frame = Mat();
- 
-#if 0
-    vector<Mat> list;
-    list.push_back(frame1);
-    list.push_back(frame2);
-    
-    Mat full_img, img;
-    int num_images = static_cast<int>(list.size());
-    
-    Mat img_warped, img_warped_s;
-    Mat dilated_mask, seam_mask, mask, mask_warped;
-    Ptr<Blender> blender;
-    Ptr<Timelapser> timelapser;
-    //double compose_seam_aspect = 1;
-    double compose_work_aspect = 1;
-    
-    bool is_compose_scale_set = false;
-    double compose_scale = 1;
-    for (int img_idx = 0; img_idx < num_images; ++img_idx)
-    {
-        // Read image and resize it if necessary
-        full_img = list[img_idx];//imread(img_names[img_idx]);
-        if (!is_compose_scale_set)
-        {
-            if (compose_megapix > 0)
-                compose_scale = min(1.0, sqrt(compose_megapix * 1e6 / full_img.size().area()));
-            is_compose_scale_set = true;
-            
-            // Compute relative scales
-            //compose_seam_aspect = compose_scale / seam_scale;
-            compose_work_aspect = compose_scale / work_scale;
-            
-            // Update warped image scale
-            Ptr<WarperCreator> warper_creator;
-            warper_creator = makePtr<cv::SphericalWarper>();
-            
-            warped_image_scale *= static_cast<float>(compose_work_aspect);
-            Ptr<RotationWarper> warper = warper_creator->create(warped_image_scale);
-            
-            // Update corners and sizes
-            for (int i = 0; i < num_images; ++i)
-            {
-                // Update intrinsics
-                cameras[i].focal *= compose_work_aspect;
-                cameras[i].ppx *= compose_work_aspect;
-                cameras[i].ppy *= compose_work_aspect;
-                
-                // Update corner and size
-                Size sz = full_img_sizes[i];
-                if (std::abs(compose_scale - 1) > 1e-1)
-                {
-                    sz.width = cvRound(full_img_sizes[i].width * compose_scale);
-                    sz.height = cvRound(full_img_sizes[i].height * compose_scale);
-                }
-                
-                Mat K;
-                cameras[i].K().convertTo(K, CV_32F);
-                Rect roi = warper->warpRoi(sz, K, cameras[i].R);
-                corners[i] = roi.tl();
-                sizes[i] = roi.size();
-            }
-        }
-        if (abs(compose_scale - 1) > 1e-1)
-            resize(full_img, img, Size(), compose_scale, compose_scale, INTER_CUBIC);
-        else
-            img = full_img;
-        full_img.release();
-        Size img_size = img.size();
-        
-        Mat K;
-        cameras[img_idx].K().convertTo(K, CV_32F);
-        
-        // Warp the current image
-        warper->warp(img, K, cameras[img_idx].R, INTER_LINEAR, BORDER_REFLECT, img_warped);
-        
-        // Warp the current image mask
-        mask.create(img_size, CV_8U);
-        mask.setTo(Scalar::all(255));
-        warper->warp(mask, K, cameras[img_idx].R, INTER_NEAREST, BORDER_CONSTANT, mask_warped);
-        
-        // Compensate exposure
-        compensator->apply(img_idx, corners[img_idx], img_warped, mask_warped);
-        
-        img_warped.convertTo(img_warped_s, CV_16S);
-        img_warped.release();
-        img.release();
-        mask.release();
-        
-        dilate(masks_warped[img_idx], dilated_mask, Mat());
-        resize(dilated_mask, seam_mask, mask_warped.size(), 0, 0, INTER_CUBIC);
-        mask_warped = seam_mask & mask_warped;
-        
-        if (!blender && !timelapse)
-        {
-            blender = Blender::createDefault(blend_type, try_cuda);
-            Size dst_sz = resultRoi(corners, sizes).size();
-            float blend_width = sqrt(static_cast<float>(dst_sz.area())) * blend_strength / 100.f;
-            if (blend_width < 1.f)
-                blender = Blender::createDefault(Blender::NO, try_cuda);
-            else if (blend_type == Blender::MULTI_BAND)
-            {
-                MultiBandBlender* mb = dynamic_cast<MultiBandBlender*>(blender.get());
-                mb->setNumBands(static_cast<int>(ceil(log(blend_width)/log(2.)) - 1.));
-                LOGLN("Multi-band blender, number of bands: " << mb->numBands());
-            }
-            else if (blend_type == Blender::FEATHER)
-            {
-                FeatherBlender* fb = dynamic_cast<FeatherBlender*>(blender.get());
-                fb->setSharpness(1.f/blend_width);
-                LOGLN("Feather blender, sharpness: " << fb->sharpness());
-            }
-            blender->prepare(corners, sizes);
-        }
-        else if (!timelapser && timelapse)
-        {
-            timelapser = Timelapser::createDefault(timelapse_type);
-            timelapser->initialize(corners, sizes);
-        }
-        
-        // Blend the current image
-        if (timelapse)
-        {
-            timelapser->process(img_warped_s, Mat::ones(img_warped_s.size(), CV_8UC1), corners[img_idx]);
-            String fixedFileName;
-            size_t pos_s = String(img_names[img_idx]).find_last_of("/\\");
-            if (pos_s == String::npos)
-            {
-                fixedFileName = "fixed_" + img_names[img_idx];
-            }
-            else
-            {
-                fixedFileName = "fixed_" + String(img_names[img_idx]).substr(pos_s + 1, String(img_names[img_idx]).length() - pos_s);
-            }
-            imwrite(fixedFileName, timelapser->getDst());
-        }
-        else
-        {
-            blender->feed(img_warped_s, mask_warped, corners[img_idx]);
-        }
-    }
-    
-    if (!timelapse)
-    {
-        Mat result, result_mask;
-        blender->blend(result, result_mask);
-        
-        LOGLN("Compositing, time: " << ((getTickCount() - t) / getTickFrequency()) << " sec");
-        
         imwrite(result_name, result);
     }
 
@@ -918,6 +710,8 @@ void SSNormalStitcher::test(void)
             cameras[i].R = rmats[i];
     }
     
+    //有可能下面是根据上面得到的参数拼接图片了
+    
     LOGLN("Warping images (auxiliary)... ");
 #if ENABLE_LOG
     t = getTickCount();
@@ -927,7 +721,7 @@ void SSNormalStitcher::test(void)
     vector<UMat> masks_warped(num_images);
     vector<UMat> images_warped(num_images);
     vector<Size> sizes(num_images);
-    vector<UMat> masks(num_images);
+    vector<UMat> masks(num_images); //not needed
     
     // Preapre images masks
     for (int i = 0; i < num_images; ++i)
@@ -939,53 +733,7 @@ void SSNormalStitcher::test(void)
     // Warp images and their masks
     
     Ptr<WarperCreator> warper_creator;
-#ifdef HAVE_OPENCV_CUDAWARPING
-    if (try_cuda && cuda::getCudaEnabledDeviceCount() > 0)
-    {
-        if (warp_type == "plane")
-            warper_creator = makePtr<cv::PlaneWarperGpu>();
-        else if (warp_type == "cylindrical")
-            warper_creator = makePtr<cv::CylindricalWarperGpu>();
-        else if (warp_type == "spherical")
-            warper_creator = makePtr<cv::SphericalWarperGpu>();
-    }
-    else
-#endif
-    {
-        if (warp_type == "plane")
-            warper_creator = makePtr<cv::PlaneWarper>();
-        else if (warp_type == "affine")
-            warper_creator = makePtr<cv::AffineWarper>();
-        else if (warp_type == "cylindrical")
-            warper_creator = makePtr<cv::CylindricalWarper>();
-        else if (warp_type == "spherical")
-            warper_creator = makePtr<cv::SphericalWarper>();
-        else if (warp_type == "fisheye")
-            warper_creator = makePtr<cv::FisheyeWarper>();
-        else if (warp_type == "stereographic")
-            warper_creator = makePtr<cv::StereographicWarper>();
-        else if (warp_type == "compressedPlaneA2B1")
-            warper_creator = makePtr<cv::CompressedRectilinearWarper>(2.0f, 1.0f);
-        else if (warp_type == "compressedPlaneA1.5B1")
-            warper_creator = makePtr<cv::CompressedRectilinearWarper>(1.5f, 1.0f);
-        else if (warp_type == "compressedPlanePortraitA2B1")
-            warper_creator = makePtr<cv::CompressedRectilinearPortraitWarper>(2.0f, 1.0f);
-        else if (warp_type == "compressedPlanePortraitA1.5B1")
-            warper_creator = makePtr<cv::CompressedRectilinearPortraitWarper>(1.5f, 1.0f);
-        else if (warp_type == "paniniA2B1")
-            warper_creator = makePtr<cv::PaniniWarper>(2.0f, 1.0f);
-        else if (warp_type == "paniniA1.5B1")
-            warper_creator = makePtr<cv::PaniniWarper>(1.5f, 1.0f);
-        else if (warp_type == "paniniPortraitA2B1")
-            warper_creator = makePtr<cv::PaniniPortraitWarper>(2.0f, 1.0f);
-        else if (warp_type == "paniniPortraitA1.5B1")
-            warper_creator = makePtr<cv::PaniniPortraitWarper>(1.5f, 1.0f);
-        else if (warp_type == "mercator")
-            warper_creator = makePtr<cv::MercatorWarper>();
-        else if (warp_type == "transverseMercator")
-            warper_creator = makePtr<cv::TransverseMercatorWarper>();
-    }
-    
+    warper_creator = makePtr<cv::SphericalWarper>();
     if (!warper_creator)
     {
         cout << "Can't create the following warper '" << warp_type << "'\n";
