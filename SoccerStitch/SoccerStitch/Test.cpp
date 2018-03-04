@@ -76,13 +76,20 @@ int test(void)
 
 void stitch_detail_test(void)
 {
+    Mat image1, image2;
+    image1 = imread("/Users/majie/Think/repository/soccercv/1.jpg");
+    image2 = imread("/Users/majie/Think/repository/soccercv/2.jpg");
+    
     //Mat referenceImage1, referenceImage2;
-    //SSNormalStitcher stitcher = SSNormalStitcher(referenceImage1, referenceImage2);
+    SSNormalStitcher stitcher = SSNormalStitcher(image1, image2);
     
-    //Mat image1, image2;
-    //Mat result = stitcher.stitch(image1, image2);
+    Mat result = stitcher.stitch(image1, image2);
+    imwrite("/Users/majie/Think/repository/soccercv/my1.jpg", result);
     
-    SSNormalStitcher::test();
+    Mat another = stitcher.stitch(image1, image2);
+    imwrite("/Users/majie/Think/repository/soccercv/my2.jpg", another);
+
+    //SSNormalStitcher::test();
 }
 
 void stitch_test(void)
