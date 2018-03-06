@@ -23,8 +23,8 @@ public:
     static void test(void);
     
     SSNormalStitcher(Mat &refFrame1, Mat &refFrame2);
-    Mat stitch(Mat &frame1, Mat frame2);
-    void getOutputSize(int &width, int &height);
+    Mat stitch(Mat &frame1, Mat &frame2);
+    Mat stitch(Mat &frame1, Mat &frame2, size_t &dst_width ,size_t &dst_height);
     
 private:
     bool is_work_scale_set, is_seam_scale_set, is_compose_scale_set;

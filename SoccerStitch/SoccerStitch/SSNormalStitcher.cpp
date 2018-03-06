@@ -263,12 +263,7 @@ SSNormalStitcher::SSNormalStitcher(Mat &video1, Mat &video2)
     return ;
 }
 
-void SSNormalStitcher::getOutputSize(int &width, int &height)
-{
-    
-}
-
-Mat SSNormalStitcher::stitch(Mat &frame1, Mat frame2)
+Mat SSNormalStitcher::stitch(Mat &frame1, Mat &frame2, size_t &dst_width, size_t &dst_height)
 {
     is_compose_scale_set = false;
     
@@ -478,6 +473,8 @@ Mat SSNormalStitcher::stitch(Mat &frame1, Mat frame2)
             blender = Blender::createDefault(blend_type, try_cuda);
             Size dst_sz = resultRoi(corners, sizes).size();
             cout<<"dst_sz: "<<dst_sz<<endl;
+            dst_width = dst_sz.width;
+            dst_height = dst_sz.height;
             
             float blend_width = sqrt(static_cast<float>(dst_sz.area())) * blend_strength / 100.f;
             if (blend_width < 1.f)
@@ -506,6 +503,13 @@ Mat SSNormalStitcher::stitch(Mat &frame1, Mat frame2)
     blender->blend(result, result_mask);
     //imwrite(result_name, result)=====
     
+    return result;
+}
+
+Mat SSNormalStitcher::stitch(Mat &frame1, Mat &frame2)
+{
+    size_t width, height;
+    Mat result = this->stitch(frame1, frame2, width, height);
     return result;
 }
 

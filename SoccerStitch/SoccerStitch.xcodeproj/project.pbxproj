@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6C04E8AD20444B8F00160255 /* SSNormalStitcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C04E8AB20444B8F00160255 /* SSNormalStitcher.cpp */; };
 		6C04E8B12046412900160255 /* SSMovWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C04E8AF2046412900160255 /* SSMovWriter.cpp */; };
+		6C60861E204DF97A00B83CC8 /* SSVideoMatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C60861C204DF97A00B83CC8 /* SSVideoMatcher.cpp */; };
 		6C690BAF204767A8005E58DA /* libopencv_stitching.3.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C690BAE204767A7005E58DA /* libopencv_stitching.3.3.0.dylib */; };
 		6CC9D1AC203FA1F500B7AF25 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9D1AB203FA1F500B7AF25 /* main.cpp */; };
 		6CC9D1B9203FA60C00B7AF25 /* libopencv_videostab.3.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CC9D1B3203FA60C00B7AF25 /* libopencv_videostab.3.3.0.dylib */; };
@@ -45,6 +46,8 @@
 		6C04E8AF2046412900160255 /* SSMovWriter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SSMovWriter.cpp; sourceTree = "<group>"; };
 		6C04E8B02046412900160255 /* SSMovWriter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SSMovWriter.hpp; sourceTree = "<group>"; };
 		6C04E8B2204641CF00160255 /* SSTypeDef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSTypeDef.h; sourceTree = "<group>"; };
+		6C60861C204DF97A00B83CC8 /* SSVideoMatcher.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SSVideoMatcher.cpp; sourceTree = "<group>"; };
+		6C60861D204DF97A00B83CC8 /* SSVideoMatcher.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SSVideoMatcher.hpp; sourceTree = "<group>"; };
 		6C690BAE204767A7005E58DA /* libopencv_stitching.3.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_stitching.3.3.0.dylib; path = "../../../../Downloads/opencv-3.3.0/release/lib/libopencv_stitching.3.3.0.dylib"; sourceTree = "<group>"; };
 		6CC9D1A8203FA1F500B7AF25 /* SoccerStitch */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SoccerStitch; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CC9D1AB203FA1F500B7AF25 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -120,6 +123,8 @@
 				6C04E8B02046412900160255 /* SSMovWriter.hpp */,
 				6CC9D1E22041534700B7AF25 /* SSMeta.cpp */,
 				6CC9D1E32041534700B7AF25 /* SSMeta.hpp */,
+				6C60861C204DF97A00B83CC8 /* SSVideoMatcher.cpp */,
+				6C60861D204DF97A00B83CC8 /* SSVideoMatcher.hpp */,
 			);
 			path = SoccerStitch;
 			sourceTree = "<group>";
@@ -201,6 +206,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C60861E204DF97A00B83CC8 /* SSVideoMatcher.cpp in Sources */,
 				6CC9D1E42041534700B7AF25 /* SSMeta.cpp in Sources */,
 				6C04E8B12046412900160255 /* SSMovWriter.cpp in Sources */,
 				6CC9D1AC203FA1F500B7AF25 /* main.cpp in Sources */,

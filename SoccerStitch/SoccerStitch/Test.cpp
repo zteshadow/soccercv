@@ -19,16 +19,13 @@
 
 #include "SSNormalStitcher.hpp"
 #include "SSMovWriter.hpp"
+#include "SSMeta.hpp"
+#include "SSVideoMatcher.hpp"
 
 #define BYTE unsigned char
 
 using namespace std;
 using namespace cv;
-
-int matchFrame(const char *file1, const char *file2, size_t &file1Start, size_t &file2Start, size_t &count)
-{
-    return 0;
-}
 
 int test(void)
 {
@@ -117,22 +114,23 @@ void stitch_test(void)
 
 int my_stitch_test()
 {
-    const char *file1 = "/Users/majie/Think/repository/soccercv/data/baidu.mov";
+    const char *file1 = "/Users/majie/Think/repository/soccercv/data/1.mov";
     VideoCapture cap1(file1); // open the default camera
     if (!cap1.isOpened())  // check if we succeeded
     {
         return -1;
     }
     
-    const char *file2 = "/Users/majie/Think/repository/soccercv/data/baidu.mov";
+    const char *file2 = "/Users/majie/Think/repository/soccercv/data/3.mov";
     VideoCapture cap2(file2);
     if (!cap2.isOpened())  // check if we succeeded
     {
         return -1;
-    }
+    }    
     
     size_t startOfFile1, startOfFile2, count;
-    int value = matchFrame(file1, file2, startOfFile1, startOfFile2, count);
+    SSVideoMatcher matcher(file1, file2);
+    int value = matcher.match(startOfFile1, startOfFile2, count);
     if (value >= 0) //match成功
     {
         //用中间帧做参考帧, 生成stitcher
@@ -147,8 +145,9 @@ int my_stitch_test()
         cap2 >> refFrame2;
         
         SSNormalStitcher stitcher = SSNormalStitcher(refFrame1, refFrame2);
-        int width, height;
-        stitcher.getOutputSize(width, height);
+        size_t width, height;
+        Mat test = stitcher.stitch(refFrame1, refFrame2, width, height);
+        imwrite("/Users/majie/Think/repository/soccercv/data/movref.jpg", test);
         
         SSMovWriter writer(width, height);
         writer.open("/Users/majie/Think/repository/soccercv/data/output.mov");
