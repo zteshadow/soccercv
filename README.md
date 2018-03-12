@@ -82,6 +82,11 @@ Build Phases -> Link Binary With Librarys, 添加'xxx/release/lib'路径下的�
 然后就可以使用了.
 
 
+### 1.6 测试数据
+测试数据目录[data](https://pan.baidu.com/s/1MnW3RwZFIXs4AFUEREw9fw)放在百度网盘, 下载放在根目录下就可以使用了.
+
+
+
 ## 2. 用APAP进行图像拼接
 参考知乎大神[YaqiLYU的文章](
 https://www.zhihu.com/question/34535199)
@@ -253,7 +258,7 @@ Sat Feb  5 14:52:49 2084
 时间是对的, 但是日期和年是不对的, 应该是2018年, 为啥搞到2084年去了, google了半天才发现, 原来这个秒数不是从1970年开始的, 而是1904年, 那么为啥是1904年而不是1900年呢, 这里面有个故事:
 UTC时间是1970年1月1日0时0分0秒算起的秒数.
 
-微软的excel支持两个版本: 1900 date system和1904 date system, 因为他的早起竞争对手Lotus1-2-3用的是1900 date syste, 所谓的1900 date system是指记录从1900年1月1日0时开始的整数.
+微软的excel支持两个版本: 1900 date system和1904 date system, 因为他的早期竞争对手Lotus1-2-3用的是1900 date syste, 所谓的1900 date system是指记录从1900年1月1日0时开始的整数.
 
 ```
 ...
@@ -262,7 +267,7 @@ Because of the design of early Macintosh computers, dates before January 1, 1904
 ```
 这里有一段话是说Macintosh使用的是1904年1月1日作为基准时间, 原因是1900年不是一个闰年.
 两个date system相差4年1天(1,462 days).
-早起的Macintosh需要支持130年的范围, 而生日从19xx年也就是20世纪开始, 到21世纪的200年里, 能被4整除但是不是闰年的只有1900年, 所以没有用1900年作为epoch, 又因为1900年后1904年是第一个leap year, 所以用的是1904年1月1日作为epoch.
+早期的Macintosh需要支持130年的范围, 而生日从19xx年也就是20世纪开始, 到21世纪的200年里, 能被4整除但是不是闰年的只有1900年, 所以没有用1900年作为epoch, 又因为1900年后1904年是第一个leap year, 所以用的是1904年1月1日作为epoch.
 
 而1900年不是闰年(leap year)Microsoft的excel是怎么处理的呢? 他们不处理, 因此输入1900年2月29日是合法的, 为毛犯这样的错误呢? 为了兼容对手的错误, excel的对手是Lotus1-2-3, 而Lotus有这个问题, 所以microsoft明知道有bug也全盘保留了.
 
@@ -275,3 +280,7 @@ Because of the design of early Macintosh computers, dates before January 1, 1904
 
 ### 3.2 opencv中的Stitch
 对于图像拼接, opencv提供了2种使用方式, 封装好的[Stitcher](https://docs.opencv.org/3.2.0/d8/d19/tutorial_stitcher.html)类和自定义各个环节的[Stitch detail](https://github.com/opencv/opencv/blob/master/samples/cpp/stitching_detailed.cpp).既然这样, 那我可以参考detail来做我自己的stitcher了.
+
+### 3.3 还是时间戳的问题
+我用3台手机录制了3份mov视频文件, 结果中间的2.mov文件时间戳竟然丢失了, 显示的创建时间是1970年1月1日, 我看来一下手机时间是正常的, 再录制新的视频时间戳也是对的, 这个为啥就丢失了呢?原因还没找到. 不过这说明用时间戳进行video align的方式在很多情况下是行不通的. 为此打算设计一个逐帧对齐的方案来进行video align.
+

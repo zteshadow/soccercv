@@ -89,16 +89,12 @@ void stitch_detail_test(void)
     //SSNormalStitcher::test();
 }
 
-void stitch_test(void)
+void stitch_test_ext(Mat &image1, Mat &image2)
 {
     vector<Mat> list;
-    
-    Mat image1 = imread("/Users/majie/Think/repository/soccercv/1.jpg");
     list.push_back(image1);
-
-    Mat image2 = imread("/Users/majie/Think/repository/soccercv/2.jpg");
     list.push_back(image2);
-
+    
     Mat pano;
     Ptr<Stitcher> stitcher = Stitcher::create(Stitcher::PANORAMA, true);
     
@@ -108,49 +104,91 @@ void stitch_test(void)
         cout << "Can't stitch images, error code = " << int(status) << endl;
         return;
     }
-    imwrite("/Users/majie/Think/repository/soccercv/tmp.jpg", pano);
+    imwrite("/Users/majie/Think/repository/soccercv/output/tmp.jpg", pano);
+    return;
+}
+
+void stitch_test(void)
+{
+    Mat image1 = imread("/Users/majie/Think/repository/soccercv/1.jpg");
+    Mat image2 = imread("/Users/majie/Think/repository/soccercv/2.jpg");
+    
+    stitch_test_ext(image1, image2);
     return;
 }
 
 int my_stitch_test()
 {
-    const char *file1 = "/Users/majie/Think/repository/soccercv/data/1.mov";
+    const char *file1 = "/Users/majie/Think/repository/soccercv/data/video/qiyi/1.mov";
     VideoCapture cap1(file1); // open the default camera
     if (!cap1.isOpened())  // check if we succeeded
     {
         return -1;
     }
     
-    const char *file2 = "/Users/majie/Think/repository/soccercv/data/3.mov";
+    const char *file2 = "/Users/majie/Think/repository/soccercv/data/video/qiyi/2.mov";
     VideoCapture cap2(file2);
     if (!cap2.isOpened())  // check if we succeeded
     {
         return -1;
     }    
-    
-    size_t startOfFile1, startOfFile2, count;
-    SSVideoMatcher matcher(file1, file2);
-    int value = matcher.match(startOfFile1, startOfFile2, count);
+
+    const char *file3 = "/Users/majie/Think/repository/soccercv/data/video/qiyi/3.mov";
+    VideoCapture cap3(file3);
+    if (!cap3.isOpened())  // check if we succeeded
+    {
+        return -1;
+    }
+
+    size_t startOfFile1, startOfFile2, startOfFile3, count;
+    SSVideoMatcher matcher(file1, file2, file3);
+    int value = matcher.match(startOfFile1, startOfFile2, startOfFile3, count);
     if (value >= 0) //match成功
     {
         //用中间帧做参考帧, 生成stitcher
-        Mat refFrame1, refFrame2;
+        Mat refFrame1, refFrame2, refFrame3;
         
-        size_t refIndex1 = startOfFile1 + count / 2;
-        cap1.set(CAP_PROP_POS_FRAMES, refIndex1);//从此时的帧数开始获取帧
-        cap1 >> refFrame1;
+        size_t refIndex3 = startOfFile3 + count / 2;
+        cap3.set(CAP_PROP_POS_FRAMES, refIndex3);//从此时的帧数开始获取帧
+        cap3 >> refFrame3;
+        imwrite("/Users/majie/Think/repository/soccercv/output/ref3.jpg", refFrame3);
         
         size_t refIndex2 = startOfFile2 + count / 2;
         cap2.set(CAP_PROP_POS_FRAMES, refIndex2);//从此时的帧数开始获取帧
         cap2 >> refFrame2;
+        imwrite("/Users/majie/Think/repository/soccercv/output/ref2.jpg", refFrame2);
+
+        size_t refIndex1 = startOfFile1 + count / 2;
+        cap1.set(CAP_PROP_POS_FRAMES, refIndex1);//从此时的帧数开始获取帧
+        cap1 >> refFrame1;
+        imwrite("/Users/majie/Think/repository/soccercv/output/ref1.jpg", refFrame1);
+
+        {
+            vector<Mat> list;
+            list.push_back(refFrame1);
+            list.push_back(refFrame2);
+            //list.push_back(refFrame3);
+
+            Mat pano;
+            Ptr<Stitcher> stitcher = Stitcher::create(Stitcher::PANORAMA, true);
+            
+            Stitcher::Status status = stitcher->stitch(list, pano);
+            if (status != Stitcher::OK)
+            {
+                cout << "Can't stitch images, error code = " << int(status) << endl;
+                return -1;
+            }
+            imwrite("/Users/majie/Think/repository/soccercv/output/tmp.jpg", pano);
+        }
+        //stitch_test_ext(refFrame1, refFrame2);
         
         SSNormalStitcher stitcher = SSNormalStitcher(refFrame1, refFrame2);
         size_t width, height;
         Mat test = stitcher.stitch(refFrame1, refFrame2, width, height);
-        imwrite("/Users/majie/Think/repository/soccercv/data/movref.jpg", test);
+        imwrite("/Users/majie/Think/repository/soccercv/output/movref.jpg", test);
         
-        SSMovWriter writer(width, height);
-        writer.open("/Users/majie/Think/repository/soccercv/data/output.mov");
+        SSMovWriter writer((Int32)width, (Int32)height);
+        writer.open("/Users/majie/Think/repository/soccercv/output/output.mov");
         cap1.set(CAP_PROP_POS_FRAMES, startOfFile1);//从此时的帧数开始获取帧
         cap2.set(CAP_PROP_POS_FRAMES, startOfFile2);//从此时的帧数开始获取帧
         for (size_t i = 0; i < count; i++) //逐帧读取
