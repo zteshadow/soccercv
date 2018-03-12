@@ -66,7 +66,7 @@ print(sys.path)
 ### 1.5 c++, xcode开发环境
 
 主要问题就是设置路径.
-设置头文件路径:
+设置头文件路径:
 ```
 进入“Build Settings”选项卡，在“Header Search Paths”栏中输入：“/usr/local/include
 ```
