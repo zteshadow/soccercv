@@ -203,6 +203,28 @@ end
 
 ![](doc/bamdtl.png)
 
+先做sphere投影, 输入图片矩阵和图片宽度, 返回图片矩阵和裁剪区域.
+![](doc/sphere_projection.JPEG)
+```
+        fprintf('  (Pre-)Projecting images into a sphere...');tic;
+        [img1,encl_rect] = imageProjection(double(img1),size(img1,2),'sphere');
+        img1 = reshape(uint8(img1),size(img1,1),size(img1,2)/3,3);
+        img1 = imcrop(img1,encl_rect); 
+
+        [img2,encl_rect] = imageProjection(double(img2),size(img2,2),'sphere');
+        img2 = reshape(uint8(img2),size(img2,1),size(img2,2)/3,3);
+        img2 = imcrop(img2,encl_rect);
+        fprintf('done (%fs)\n',toc);
+
+```
+对应的opencv的方法是:
+![](doc/opencv_sphere.JPEG)
+
+问题1: 为什么opencv的变换中需要相机参数, 而matlib代码里面没有?
+问题2: 什么情况用球面投影, 什么情况用柱面投影?
+参考:
+http://blog.csdn.net/flued_g/article/details/50472601
+
 
 ## 3. 拼接两个.mov视频文件
 
