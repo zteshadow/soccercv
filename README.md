@@ -70,9 +70,9 @@ print(sys.path)
 ```
 进入“Build Settings”选项卡，在“Header Search Paths”栏中输入：“/usr/local/include
 ```
-设置opencv动态库的路径:
+设置opencv动态库的路径:
 ```
-进入“Build Settings”选项卡，在“Library Search Paths”栏中输入“xxx/release/lib”, 注意这是opencv安装编译时的release路径.
+进入“Build Settings”选项卡，在“Library Search Paths”栏中输入“xxx/release/lib”,注意这是opencv安装编译时的release路径.
 ```
 
 链接opencv动态库:
