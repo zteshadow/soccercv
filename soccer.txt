@@ -1,4 +1,31 @@
 
+
+
+护照:
+茜茜:EA6523197
+蛋蛋:EA6523117
+我: G35799919
+
+信用卡:
+10,20, 4392260007134248，885
+
+
+solar camera:
+https://baijiahao.baidu.com/s?id=1566266115670424&wfr=spider&for=pc
+工作电压、电流，年度平均日照天数等信息应该具备
+
+太阳能电池板砷化镓的电池现在效率最高，转化效率大于37% 一平方米的功率也就是370瓦，按以上的计算1平米是10个37瓦，你的75瓦，0.5平米足够用了吧了吧
+
+2. 透视投影的原理和实现
+3D渲染
+为什么要投影: 要解决视觉一致性的问题
+http://blog.csdn.net/goncely/article/details/5397729
+
+相机模型:小孔成像模型, 如何自己家里面实验?
+相机标定: 内参外参
+
+
+
 图片添加矩形框:
 clc; close all; clear all;
 image = imread('/home/wangxiao/Pictures/image/gamersky_022origin_043_20147261368D.jpg');
