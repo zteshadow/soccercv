@@ -65,6 +65,13 @@ print(sys.path)
 
 ### 1.5 c++, xcode开发环境
 
+https://opencv.org/releases.html
+官网下载3.2.0源代码
+
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..   
+make  
+sudo make install
+
 主要问题就是设置路径.
 设置头文件路径:
 ```
