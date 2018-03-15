@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 
 
 护照:
@@ -32,20 +33,59 @@ image = imread('/home/wangxiao/Pictures/image/gamersky_022origin_043_20147261368
 figure;imshow(image);
 hold on
 rectangle('Position',[100 100 100 100],'LineWidth',4,'EdgeColor','r');
+=======
+>>>>>>> 帧同步是重点
 
 
-rectangle('position',[x,y,w,h])
-
-  0   46    0
-  46  0     47
-  0   47    0
+**** 双目相机帧同步是重点 ******
 
 
-'conndef' undefined
 
-CERES solver and GLOG (both from google) should be installed in your
+大饼很重要.
 
-brew install ceres-solver
+超级直播为啥gg了?
+日本有类似的野球届的直播, 视频等服务吗? 
+英超有吗?
+
+
+无人驾驶航空器飞行管理暂行条例
+120米, 50米以下飞行
+
+如何定位上海有多少球场? 以及运营情况--即多少人在什么时段踢球?
+用无人机? 速度多少? 需要什么手续? 可以跑全城吗?
+20分钟续航, 能覆盖多大范围? 大疆范围5公里.
+这个距离有图传距离和控制距离2个概念.
+遥控距离是由无线电技术决定的, 毫无压力.
+图传距离不好搞, 大疆好的7公里, 否则图传不过来就是盲飞, 怕怕.
+
+
+soccer video analysis software
+
+虎扑为啥不2C? 当时是2B吗? 为啥做不下去了?
+虎扑的这个还在做吗?能加入吗?
+
+
+www.camvision.cz
+https://www.youtube.com/watch?v=NbuqD6cITBM, 这是我想要的啊, 门后面立一个摄像头, 拍摄视频, 然后出数据分析, 带空当, 速度, 位置等等. 厉害了.
+
+
+3张图片用默认的stitcher来做, 不支持.
+那就撸一遍
+
+马币, 自己录制的mov, 最关键的中间参考2.mov竟然丢失了时间戳, 坑比.
+今晚再录制.
+早上试试用遍历能不能找到匹配帧.
+GOP == fps一般
+我的这个苹果录制的mov, 30帧的帧率的h264, 那么GOP就是30帧, I帧, IB...P... IB...P... IB...P..., 我只要匹配I帧就行了.
+
+大牛剖析detail源码
+http://blog.csdn.net/skeeee/article/details/19480693
+
+
+17.买多头的手机支架
+试验了一下, 发现不同型号手机, 不同高度, 也可以拼接出能用的效果
+那么我的多头支架是要diy呢, 还是买高低不同的?
+
 
 16.工程和研究分开2条线
 下面是工程线, 研究线如下:
