@@ -1,7 +1,4 @@
 
-<<<<<<< HEAD
-
-
 护照:
 茜茜:EA6523197
 蛋蛋:EA6523117
@@ -33,8 +30,6 @@ image = imread('/home/wangxiao/Pictures/image/gamersky_022origin_043_20147261368
 figure;imshow(image);
 hold on
 rectangle('Position',[100 100 100 100],'LineWidth',4,'EdgeColor','r');
-=======
->>>>>>> 帧同步是重点
 
 
 **** 双目相机帧同步是重点 ******
