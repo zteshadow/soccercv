@@ -1,4 +1,7 @@
 
+深度学习:
+https://blog.coast.ai/continuous-online-video-classification-with-tensorflow-inception-and-a-raspberry-pi-785c8b1e13e1
+
 
 **** 帧同步 ****
 全新Spectra摄像头模组
