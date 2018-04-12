@@ -18,6 +18,7 @@ class CaptureManager(object):
         self._videoEncoding = None
         self._videoWriter = None
 
+        #estimate the fts by _frameElapsed / time
         self._startTime = None
         self._frameElapsed = long(0)
         self._fptEstimate = None
@@ -46,5 +47,43 @@ class CaptureManager(object):
     def isWritingVideo(self):
         return self._videoFileName is not None
     
-    
+    def enterFrame(self):
+        """Capture the next frame if any"""
+        assert not self.enterFrame, "previous enter frame had no matching exit frame"
 
+        if self._capture is not None:
+            self._enteredFrame = self._capture.grab()
+
+    def exitFrame(self):
+        """write file, show in window, release frame"""
+        if self.frame is None:
+            self._enteredFrame = False
+            return
+
+        if self._frameElapsed == 0:
+            self._startTime = time.time()
+        else:
+            self._fptEstimate = self._frameElapsed / time.time() - self._startTime
+        self._frameElapsed += 1
+        
+        #show in window
+        if self.window is not None:
+            if self.mirror:
+                mirrorFrame = numpy.fliplr(self._frame).copy()
+                self.window.show(mirrorFrame)
+            else:
+                self.window.show(self._frame)
+
+        #write
+        if self.isWritingImage:
+            cv2.imwrite(self._imageFileName, self._frame)
+            self._imageFileName = None
+
+        self._writeVideoFrame()
+
+        self._frame = None
+        self._enteredFrame = False
+
+    def writeImage(self, fname):
+        self._imageFileName = fname
+        
