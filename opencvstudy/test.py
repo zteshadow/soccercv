@@ -43,6 +43,10 @@ cv2.imshow('3x3', k3)
 cv2.imshow('5x5', k5)
 cv2.imshow('hpf', hpf)
 
+#cv2.imwrite('./3x3.jpg', k3)
+#cv2.imwrite('./5x5.jpg', k5)
+#cv2.imwrite('./hpf.jpg', hpf)
+
 cv2.waitKey()
 cv2.destroyAllWindows()
 

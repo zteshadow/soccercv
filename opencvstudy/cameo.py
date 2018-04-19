@@ -1,5 +1,6 @@
 
 import cv2
+import filters
 from managers import WindowManager, CaptureManager
 
 class Cameo(object):
@@ -11,7 +12,11 @@ class Cameo(object):
         self._window.createWindow()
         while self._window.isWindowCreated:
             self._capture.enterFrame()
+
             frame = self._capture.frame
+            
+            filters.strokeEdges(frame, frame)
+
             self._window.show(frame)
             self._capture.exitFrame()
             self._window.processEvents()
