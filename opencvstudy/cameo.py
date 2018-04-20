@@ -6,7 +6,8 @@ from managers import WindowManager, CaptureManager
 class Cameo(object):
     def __init__(self):
         self._window = WindowManager('Cameo', self.onKeypress)
-        self._capture = CaptureManager(cv2.VideoCapture(0), self._window, True)
+        #self._capture = CaptureManager(cv2.VideoCapture(0), self._window, True)
+        self._capture = CaptureManager(cv2.VideoCapture('1.mp4') , self._window, False)
 
     def run(self):
         self._window.createWindow()
@@ -14,8 +15,11 @@ class Cameo(object):
             self._capture.enterFrame()
 
             frame = self._capture.frame
-            
-            filters.strokeEdges(frame, frame)
+
+            #filters.strokeEdges(frame, frame)
+            #frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            #frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            frame = cv2.Canny(frame, 200, 300)
 
             self._window.show(frame)
             self._capture.exitFrame()
