@@ -34,30 +34,28 @@ class AdditiveGaussianNoiseAutoencoder(object):
         all_weights['b2'] = tf.Variable(tf.zeros([self.n_input]), dtype = tf.float32)
         return all_weights
         
+    def partial_fit(self, X):
+        cost, opt = self.session.run((self.cost, self.optimizer), feed_dict={self.x:X self.scale:self.training_scale})
+        return cost
+    
+    def calc_total_cost(self, X):
+        return self.session.run(self.cost, feed_dict={self.x:X self.scale:self.training_scale})
 
+    def transform(self, X):
+        return self.session.run(self.hidden, feed_dict={self.x:X, self.scale:self.training_scale})
 
-mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
-print(mnist.train.images.shape, mnist.train.labels.shape)
+    def generate(self, hidden = None):
+        if hidden is None:
+            hidden = np.random.normal(size = self.weights['b1'])
+        return self.session.run(self.reconstruct, feed_dict={self.hidden:hidden})
 
-session = tf.InteractiveSession()
-x = tf.placeholder(tf.float32, [None, 784])
-W = tf.Variable(tf.zeros([784, 10]))
-b = tf.Variable(tf.zeros([10]))
+    def reconstruct(self, X):
+        return self.session.run(self.reconstruct, feed_dict={self.x:X, self.scale:self.training_scale})
 
-y = tf.nn.softmax(tf.matmul(x, W) + b)
+    def getWeights(self):
+        return self.session.run(self.weights['w1'])
 
-y_ = tf.placeholder(tf.float32, [None, 10])
-cost = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
+    def getBiases(self):
+        return self.session.run(self.weights['b1'])
 
-train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cost)
-
-tf.global_variables_initializer().run()
-for i in range(1000):
-    batch_x, batch_y = mnist.train.next_batch(100)
-    train_step.run({x:batch_x, y_:batch_y})
-
-
-correct = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
-accuracy = tf.reduce_mean(tf.cast(correct, tf.float32))
-print(accuracy.eval({x:mnist.test.images, y_:mnist.test.labels}))
-
+mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
