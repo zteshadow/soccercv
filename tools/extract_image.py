@@ -6,21 +6,28 @@
 #
 # ==============================================================================
 import cv2
-import sys
+import sys, os
 
 def show_usage():
     print('usage:\n\tpython extract_image \'file\' \'output dir\'')
 
-def extract(video_file, output_dir):
+def get_file_count(dir):
+    count = 0
+    for fn in os.listdir(dir):
+        count += 1
+    print('%d total files in dir: %s' % (count, dir))
+    return count
+
+def extract(video_file, output_dir, start_index):
     capture = cv2.VideoCapture(video_file)
     sucess, frame = capture.read()
-    index = 1
+    index = start_index
     while sucess:
-        name = '%6d' % index
-        #cv2.imwrite(name, frame)
-        print(name)
+        print(output_dir + '/%06d.jpg' % index)
+        cv2.imwrite(output_dir + '/%06d.jpg' % index, frame)
         index += 1
         sucess, frame = capture.read()
+    print('total %d images etracted to dir: %s' % (index - start_index, output_dir))
 
 if __name__=='__main__':
     len = len(sys.argv)
@@ -29,5 +36,10 @@ if __name__=='__main__':
     else:
         file = sys.argv[1]
         dir = sys.argv[2]
-        extract(file, dir)
+        start_index = 1
+        if os.path.isdir(dir):
+            start_index = get_file_count(dir) + 1
+        else:
+            os.mkdir(dir)
+        extract(file, dir, start_index)
 
