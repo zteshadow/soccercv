@@ -9,7 +9,7 @@ import cv2
 import sys
 
 def show_usage():
-    print('python extract_image \'file\', \'output dir\')
+    print('usage:\n\tpython extract_image \'file\' \'output dir\'')
 
 def extract(video_file, output_dir):
     capture = cv2.VideoCapture(video_file)
@@ -17,15 +17,17 @@ def extract(video_file, output_dir):
     index = 1
     while sucess:
         name = '%6d' % index
-        cv2.imwrite(name, frame)
+        #cv2.imwrite(name, frame)
+        print(name)
         index += 1
-        sucess, frame = camera.read()
+        sucess, frame = capture.read()
 
 if __name__=='__main__':
-    if sys.argc != 2:
+    len = len(sys.argv)
+    if len != 3:
         show_usage()
     else:
-        file = sys.argv[0]
-        dir = sys.argv[1]
+        file = sys.argv[1]
+        dir = sys.argv[2]
         extract(file, dir)
 
