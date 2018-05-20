@@ -1,4 +1,8 @@
-
+#
+# used to find hikang camera in the same network
+# 用来发现本局域网内的海康摄像头(扫描80端口)
+#
+# ==============================================================================
 import socket
 
 def check_port(address, port):
