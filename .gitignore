@@ -60,3 +60,13 @@ output/tmp.jpg
 opencvstudy/__pycache__/managers.cpython-35.pyc
 opencvstudy/screenshot.avi
 opencvstudy/screenshot.jpg
+opencvstudy/__pycache__/filters.cpython-35.pyc
+opencvstudy/__pycache__/utils.cpython-35.pyc
+tensorflow/MNIST_data/t10k-images-idx3-ubyte.gz
+tensorflow/MNIST_data/t10k-labels-idx1-ubyte.gz
+tensorflow/MNIST_data/train-images-idx3-ubyte.gz
+tensorflow/MNIST_data/train-labels-idx1-ubyte.gz
+opencvstudy/3x3.jpg
+opencvstudy/5x5.jpg
+opencvstudy/cany.jpg
+opencvstudy/hpf.jpg
