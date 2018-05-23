@@ -56,6 +56,6 @@ ssh-rsa [KEY_VALUE] [USERNAME]
 ssh -N -f -i ~/.ssh/my-ssh-key -L 8898:localhost:8888 <username>@<IP-address-of-your-GPU-instance>
 
 #my-ssh-key就是刚才生成的密钥对中的私钥
-#8898是本地端口, 8888是远端服务器的监听端口
+#8898是本地端口, 8888是远端服务器的监听端口
 ```
 连接成功后, 在本地浏览器输入localhost:8898, 就可以打开远端服务了.
