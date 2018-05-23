@@ -59,3 +59,8 @@ ssh -N -f -i ~/.ssh/my-ssh-key -L 8898:localhost:8888 <username>@<IP-address-of-
 #8898是本地端口, 8888是远端服务器的监听端口
 ```
 连接成功后, 在本地浏览器输入localhost:8898, 就可以打开远端服务了.
+
+
+## 2. SSD
+训练了10张自己的数据, 得到的效果是这样的:
+![](./doc/ssd1.png), 好糟糕, 是该用现有的模型进行fine tune呢, 还是加大训练数据集?
