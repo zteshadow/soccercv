@@ -2,12 +2,16 @@ import cv2
 import numpy as np
 
 image = cv2.imread('1.png', cv2.IMREAD_COLOR)
+#cv2.imshow('image', image)
+
 pyrDownImage = cv2.pyrDown(image)
+#cv2.imshow('pyr down', pyrDownImage)
+
 print(image.shape)
 print(pyrDownImage.shape)
 
-#cv2.imshow('image', image)
-#cv2.imshow('pyr down', pyrDownImage)
+ret, thresh = cv2.threshold(cv2.cvtColor(pyrDownImage.copy(), cv2.COLOR_BGR2GRAY), 127, 255, cv2.THRESH_BINARY)
+#cv2.imshow('thresh', thresh)
 
 '''
 ret, thresh = cv2.threshold(image, 127, 255, 0)
