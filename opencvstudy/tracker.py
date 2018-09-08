@@ -6,7 +6,7 @@ import sys
 
 if __name__ == '__main__':
     tracker_types = ['BOOSTING', 'MIL', 'KCF', 'TLD', 'MEDIANFLOW', 'GOTURN', 'MOSSE', 'CSRT']
-    tracker_type = tracker_types[1]
+    tracker_type = tracker_types[7]
     
     if int(major_ver) < 3:
         tracker = cv2.Tracker_create(tracker_type)
@@ -29,6 +29,7 @@ if __name__ == '__main__':
             tracker = cv2.TrackerCSRT_create()
 
         video = cv2.VideoCapture('../../video/1.mp4')
+        #video = cv2.VideoCapture('../../all.MOV')
         if not video.isOpened():
             print('open video file error')
             sys.exit()
@@ -61,6 +62,7 @@ if __name__ == '__main__':
             cv2.putText(frame, 'FPS: ' + str(int(fps)), (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50, 170, 50), 2)
             cv2.imshow('Frame', frame)
 
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+            key = cv2.waitKey(1) & 0xFF
+            if  key == ord('q'):
                 break
 
