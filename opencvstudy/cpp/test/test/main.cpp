@@ -12,16 +12,19 @@
 #include <opencv2/tracking.hpp>
 #include <opencv2/core/ocl.hpp>
 
+extern int object_detect_main(int argc, char** argv);
+extern void hog_test(void);
+
 using namespace cv;
 using namespace std;
 
 #define SSTR( x ) static_cast< std::ostringstream & >( \
 ( std::ostringstream() << std::dec << x ) ).str()
 
-int main(int argc, const char * argv[])
+int tracker_test(void)
 {
     string tracker_list[] ={"BOOSTING", "MIL", "KCF", "TLD", "MEDIANFLOW", "GOTURN", "MOSSE", "CSRT"};
-    string tracker_type = tracker_list[7];
+    string tracker_type = tracker_list[2];
     Ptr<Tracker> tracker;
     
     if (tracker_type == "BOOSTING")
@@ -43,7 +46,9 @@ int main(int argc, const char * argv[])
     else if (tracker_type == "MOSSE")
         tracker = TrackerMOSSE::create();
     else if (tracker_type == "CSRT")
+    {
         tracker = TrackerCSRT::create();
+    }
     
     VideoCapture video("/Users/samuel/Think/source/video/1.mp4");
     if (!video.isOpened())
@@ -54,6 +59,10 @@ int main(int argc, const char * argv[])
     
     Mat frame;
     bool ok = video.read(frame);
+    
+    //resize
+    
+    //save
     
     Rect2d bbox = selectROI(frame, false);
     rectangle(frame, bbox, Scalar(255, 0, 0), 2, 1);
@@ -94,14 +103,23 @@ int main(int argc, const char * argv[])
         // Display frame.
         imshow("Tracking", frame);
         
-    #if 1
+#if 1
         int key = cv::waitKey(1);
         if ((key & 0xFF) == 'q')
         {
             break;
         }
-    #endif
+#endif
     }
+    
+    return 0;
+}
+
+int main(int argc, const char * argv[])
+{
+    //tracker_test();
+    object_detect_main(argc, (char **)argv);
+    //hog_test();
     
     return 0;
 }
