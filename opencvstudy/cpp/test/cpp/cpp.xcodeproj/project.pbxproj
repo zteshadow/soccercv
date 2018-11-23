@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7E8925F1217AA0890050699D /* quanjiafu.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E8925F0217AA0890050699D /* quanjiafu.png */; };
+		7E8925F4217AA5DE0050699D /* scimage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E8925F2217AA5DE0050699D /* scimage.cpp */; };
 		7ED9E944216D938B000A899E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ED9E943216D938B000A899E /* AppDelegate.m */; };
 		7ED9E947216D938B000A899E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ED9E946216D938B000A899E /* ViewController.m */; };
 		7ED9E94A216D938C000A899E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7ED9E948216D938C000A899E /* Main.storyboard */; settings = {ASSET_TAGS = (uiimageview, ); }; };
@@ -18,6 +19,9 @@
 
 /* Begin PBXFileReference section */
 		7E8925F0217AA0890050699D /* quanjiafu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quanjiafu.png; sourceTree = "<group>"; };
+		7E8925F2217AA5DE0050699D /* scimage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = scimage.cpp; path = ../../../source/scimage.cpp; sourceTree = "<group>"; };
+		7E8925F3217AA5DE0050699D /* scimage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = scimage.hpp; path = ../../../source/scimage.hpp; sourceTree = "<group>"; };
+		7E8925F5217AA62E0050699D /* scdef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = scdef.h; path = ../../../source/scdef.h; sourceTree = "<group>"; };
 		7ED9E93F216D938B000A899E /* cpp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cpp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ED9E942216D938B000A899E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7ED9E943216D938B000A899E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -70,6 +74,9 @@
 				7ED9E94D216D9390000A899E /* LaunchScreen.storyboard */,
 				7ED9E950216D9390000A899E /* Info.plist */,
 				7ED9E951216D9390000A899E /* main.m */,
+				7E8925F5217AA62E0050699D /* scdef.h */,
+				7E8925F2217AA5DE0050699D /* scimage.cpp */,
+				7E8925F3217AA5DE0050699D /* scimage.hpp */,
 			);
 			path = cpp;
 			sourceTree = "<group>";
@@ -149,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7ED9E947216D938B000A899E /* ViewController.m in Sources */,
+				7E8925F4217AA5DE0050699D /* scimage.cpp in Sources */,
 				7ED9E952216D9390000A899E /* main.m in Sources */,
 				7ED9E944216D938B000A899E /* AppDelegate.m in Sources */,
 			);

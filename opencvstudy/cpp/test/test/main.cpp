@@ -117,8 +117,8 @@ int tracker_test(void)
 
 int main(int argc, const char * argv[])
 {
-    //tracker_test();
-    object_detect_main(argc, (char **)argv);
+    tracker_test();
+    //object_detect_main(argc, (char **)argv);
     //hog_test();
     
     return 0;
