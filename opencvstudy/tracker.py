@@ -1,12 +1,13 @@
 
 import cv2
 import sys
+import imutils
 
 (major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')
 
 if __name__ == '__main__':
     tracker_types = ['BOOSTING', 'MIL', 'KCF', 'TLD', 'MEDIANFLOW', 'GOTURN', 'MOSSE', 'CSRT']
-    tracker_type = tracker_types[7]
+    tracker_type = tracker_types[3]
     
     if int(major_ver) < 3:
         tracker = cv2.Tracker_create(tracker_type)
@@ -29,7 +30,7 @@ if __name__ == '__main__':
             tracker = cv2.TrackerCSRT_create()
 
         video = cv2.VideoCapture('../../video/1.mp4')
-        #video = cv2.VideoCapture('../../all.MOV')
+        #video = cv2.VideoCapture('../../video/all.MOV')
         if not video.isOpened():
             print('open video file error')
             sys.exit()
@@ -38,6 +39,14 @@ if __name__ == '__main__':
         if not ok:
             print('read video file error')
             sys.exit()
+
+        frame = imutils.resize(frame, width = 600)
+
+        '''
+        #测试视频, 跳过前面几帧
+        for index in range(50):
+            video.read()
+        '''
 
         #bbox = (710, 303, 20, 20)
         bbox = cv2.selectROI(frame, False)
@@ -48,6 +57,8 @@ if __name__ == '__main__':
             ok, frame = video.read()
             if not ok:
                 break
+
+            frame = imutils.resize(frame, width = 600)
             timer = cv2.getTickCount()
             ok, bbox = tracker.update(frame)
             fps = cv2.getTickFrequency() / (cv2.getTickCount() - timer)

@@ -30,7 +30,12 @@ while True:
     frame = imutils.resize(frame, width = 600)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     blur = cv2.medianBlur(gray, 5)
-    circles = cv2.HoughCircles(blur, cv2.HOUGH_GRADIENT, 1, 120, param1 = 100, param2 = 30, minRadius = 0, maxRadius = 0)
+
+    circles = cv2.HoughCircles(blur, cv2.HOUGH_GRADIENT, 1, 120, param1 = 100, param2 = 40, minRadius = 0, maxRadius = 0)
+    if circles is None:
+        print('No circle detected')
+        break
+
     circles = np.uint16(np.around(circles))
 
     for i in circles[0, :]:
