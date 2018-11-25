@@ -7,9 +7,19 @@
 //
 
 #include <iostream>
+#include "tld.hpp"
+
+using namespace scv;
 
 int main(int argc, const char * argv[]) {
     // insert code here...
+    
+    TLD tld = TLD();
+    Frame frame;
+    Rect rect;
+    
+    tld.buildGrids(frame, rect);
+    
     std::cout << "Hello, World!\n";
     return 0;
 }
