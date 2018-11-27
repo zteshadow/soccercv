@@ -19,6 +19,7 @@ using namespace scv;
 class SCV_EXPORTS TLD
 {
 public:
+    /*构建多尺寸滑动窗口(multiple-scale, sliding window)*/
     void buildGrids(const Frame &frame, const Rect &box);
 };
 

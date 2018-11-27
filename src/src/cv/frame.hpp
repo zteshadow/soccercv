@@ -11,14 +11,17 @@
 
 #include <stdio.h>
 #include "scvdef.h"
+#include "types.hpp"
 
 namespace scv
 {
+    
 class SCV_EXPORTS Frame
 {
 public:
-    
+    Size size(void) const;
 };
+
 }
 
 #endif /* frame_hpp */

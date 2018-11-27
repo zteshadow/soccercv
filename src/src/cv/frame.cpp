@@ -7,3 +7,11 @@
 //
 
 #include "frame.hpp"
+
+using namespace scv;
+
+Size Frame::size() const
+{
+    Size size = Size(1024, 768);
+    return size;
+}
