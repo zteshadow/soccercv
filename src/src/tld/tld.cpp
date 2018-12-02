@@ -53,11 +53,11 @@ void TLD::buildGrids(const Frame &frame, const Rect &box)
         int step = round(min(width, height) * 0.1);
         
         //slide bbox on the frame, drop the bbox if smaller than 'step'
-        for (int y = 0; y + step < frame_size.height; y += step)
+        for (int y = 0; y + height < frame_size.height; y += step)
         {
-            for (int x = 0; x + step < frame_size.width; x += step)
+            for (int x = 0; x + width < frame_size.width; x += step)
             {
-                grid_list.push_back(Rect(x, y, width, height));
+                grid_list.push_back(BBox(Rect(x, y, width, height)));
             }
         }
     }

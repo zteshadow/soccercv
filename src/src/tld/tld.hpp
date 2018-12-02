@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include "scvdef.h"
 #include "frame.hpp"
-#include "types.hpp"
+#include "tld_types.hpp"
 
 using namespace scv;
 using namespace std;
@@ -26,7 +26,7 @@ public:
     
 private:
     vector<Size> scale_list; //multiple scale from 1.2^-10 ~ 1.2^10[1/6 ~ 6]
-    vector<Rect> grid_list; //all sliding window
+    vector<BBox> grid_list; //all sliding window
 };
 
 #endif /* tld_hpp */
