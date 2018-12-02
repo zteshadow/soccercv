@@ -16,7 +16,7 @@ int main(int argc, const char * argv[]) {
     
     TLD tld = TLD();
     Frame frame;
-    Rect rect;
+    Rect rect = Rect(0, 0, 20, 22);
     
     tld.buildGrids(frame, rect);
     

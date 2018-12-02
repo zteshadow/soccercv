@@ -9,18 +9,24 @@
 #ifndef tld_hpp
 #define tld_hpp
 
+#include <vector>
 #include <stdio.h>
 #include "scvdef.h"
 #include "frame.hpp"
 #include "types.hpp"
 
 using namespace scv;
+using namespace std;
 
 class SCV_EXPORTS TLD
 {
 public:
-    /*构建多尺寸滑动窗口(multiple-scale, sliding window)*/
+    /*multiple-scale, sliding window, with scale = 1.2 and step = 0.1*/
     void buildGrids(const Frame &frame, const Rect &box);
+    
+private:
+    vector<Size> scale_list; //multiple scale from 1.2^-10 ~ 1.2^10[1/6 ~ 6]
+    vector<Rect> grid_list; //all sliding window
 };
 
 #endif /* tld_hpp */
