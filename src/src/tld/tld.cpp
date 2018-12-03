@@ -36,8 +36,8 @@ void TLD::buildGrids(const Frame &frame, const Rect &box)
         const float scale = scales[i];
         
         //box size for current scale
-        int width = round(frame_size.width * scale);
-        int height = round(frame_size.height * scale);
+        int width = round(box.width * scale);
+        int height = round(box.height * scale);
         
         //valid check
         if (is_invalid(width, height, frame_size, s_min_size))
@@ -53,9 +53,9 @@ void TLD::buildGrids(const Frame &frame, const Rect &box)
         int step = round(min(width, height) * 0.1);
         
         //slide bbox on the frame, drop the bbox if smaller than 'step'
-        for (int y = 0; y + height < frame_size.height; y += step)
+        for (int y = 0; y + height <= frame_size.height; y += step)
         {
-            for (int x = 0; x + width < frame_size.width; x += step)
+            for (int x = 0; x + width <= frame_size.width; x += step)
             {
                 grid_list.push_back(BBox(Rect(x, y, width, height)));
             }
